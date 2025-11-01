@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Logo from "./assets/iconosegura.jpg";
-import viteLogo from "/vite.svg";
 
 import "./App.css";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
