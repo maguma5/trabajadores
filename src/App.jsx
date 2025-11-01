@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      <h1>Vite + React</h1>
+      <h1>Vite + React aqui</h1>
       {trabajadores.map((trabajador, index) => (
         <p key={index}>{trabajador.nombre}</p>
       ))}
