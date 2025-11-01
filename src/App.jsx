@@ -1,33 +1,34 @@
-import { use, useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
+import { useEffect, useState } from "react";
+import Logo from "./assets/iconosegura.jpg";
 import viteLogo from "/vite.svg";
+
 import "./App.css";
-import { useFirebase } from "./libs/hooks/useFirebase";
-import {
-  getFirestore,
-  getDocs,
-  collection,
-  onSnapshot,
-} from "firebase/firestore";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
 
 function App() {
   const { trabajadores } = useTrabajadores();
+  const [mostrar, setMostrar] = useState(false);
 
   return (
     <>
-      <h1>Vite + React AHORA</h1>
-      {trabajadores.map((trabajador, index) => (
-        <p key={index}>{trabajador.nombre}</p>
-      ))}
-      <div className="card">
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+      <h1>EMPRESA</h1>
+
+      <img src={Logo} alt="Logo de la empresa" width="200" />
+
+      <p>
+        Bienvenido al sistema de control de presencia de los trabajadores de la
+        obra
       </p>
+
+      <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
+
+      {mostrar && (
+        <div>
+          {trabajadores.map((trabajador, index) => (
+            <p key={index}>{trabajador.nombre}</p>
+          ))}
+        </div>
+      )}
     </>
   );
 }
