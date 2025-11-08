@@ -8,6 +8,17 @@ import { useTrabajadoresFiltrados } from "./libs/hooks/useTrabajadoresFiltrados"
 function App() {
   // const { trabajadores } = useTrabajadores();
   const [mostrar, setMostrar] = useState(false);
+  const hoy = new Date().toISOString().split("T")[0];
+  const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+    .toISOString()
+    .split("T")[0];
+  const finMes = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth() + 1,
+    0
+  )
+    .toISOString()
+    .split("T")[0];
   const { trabajadores, loading } = useTrabajadoresFiltrados({
     empresa,
     desde: modo === "dia" ? hoy : inicioMes,
@@ -25,7 +36,7 @@ function App() {
       <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
       <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
 
-      {/* {loading && <p>Cargando...</p>} */}
+      {loading && <p>Cargando...</p>}
 
       <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
 
