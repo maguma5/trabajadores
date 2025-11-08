@@ -3,7 +3,7 @@ import Logo from "./assets/iconosegura.jpg";
 
 import "./App.css";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
-import { useTrabajadoresFiltrados } from "./libs/hooks/hookdia";
+// import { useTrabajadoresFiltrados } from "./libs/hooks/hookdia";
 
 function App() {
   const { trabajadores } = useTrabajadores();
