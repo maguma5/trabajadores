@@ -3,10 +3,16 @@ import Logo from "./assets/iconosegura.jpg";
 
 import "./App.css";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
+import { useTrabajadoresFiltrados } from "./libs/hooks/useTrabajadoresFiltrados";
 
 function App() {
-  const { trabajadores } = useTrabajadores();
+  // const { trabajadores } = useTrabajadores();
   const [mostrar, setMostrar] = useState(false);
+  const { trabajadores, loading } = useTrabajadoresFiltrados({
+    empresa,
+    desde: modo === "dia" ? hoy : inicioMes,
+    hasta: modo === "dia" ? hoy : finMes,
+  });
 
   return (
     <>
@@ -14,7 +20,7 @@ function App() {
 
       <img src={Logo} alt="Logo de la empresa" width="200" />
 
-      <h1>Control de Presencia</h1>
+      <h1>Control de Presencia hoy</h1>
 
       <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
       <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
