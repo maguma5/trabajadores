@@ -14,10 +14,12 @@ function App() {
 
       <img src={Logo} alt="Logo de la empresa" width="200" />
 
-      <p>
-        Bienvenido al sistema de control de presencia de los trabajadores de la
-        obra San Carlos
-      </p>
+      <h1>Control de Presencia</h1>
+
+      <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
+      <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
+
+      {loading && <p>Cargando...</p>}
 
       <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
 
