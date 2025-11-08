@@ -8,7 +8,7 @@ import { useTrabajadoresFiltrados } from "./libs/hooks/hookdia";
 function App() {
   // const { trabajadores } = useTrabajadores();
   const [mostrar, setMostrar] = useState(false);
-  const hoy = new Date().toISOString().split("T")[0];
+  /* const hoy = new Date().toISOString().split("T")[0];
   const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
     .toISOString()
     .split("T")[0];
@@ -23,7 +23,7 @@ function App() {
     empresa,
     desde: modo === "dia" ? hoy : inicioMes,
     hasta: modo === "dia" ? hoy : finMes,
-  });
+  }); */
 
   return (
     <>
