@@ -1,34 +1,15 @@
 import { useEffect, useState } from "react";
 import Logo from "./assets/iconosegura.jpg";
-import viteLogo from "/vite.svg";
 
 import "./App.css";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
-import { useTrabajadoresPorFiltro } from "./libs/hooks/hookdia";
 
 function App() {
-  const { useTrabajadores } = useTrabajadores();
+  const { trabajadores } = useTrabajadores();
   const [mostrar, setMostrar] = useState(false);
-  const [modo, setModo] = useState(null);
-  const empresa = "Segura";
-  const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-    .toISOString()
-    .split("T")[0];
-  const finMes = new Date(
-    new Date().getFullYear(),
-    new Date().getMonth() + 1,
-    0
-  )
-    .toISOString()
-    .split("T")[0];
-  const { trabajadores, loading } = useTrabajadoresPorFiltro({
-    empresa,
-    desde: modo === "dia" ? hoy : inicioMes,
-    hasta: modo === "dia" ? hoy : finMes,
-  });
 
   return (
-    <div>
+    <>
       <h1>EMPRESA</h1>
 
       <img src={Logo} alt="Logo de la empresa" width="200" />
@@ -38,21 +19,16 @@ function App() {
         obra San Carlos
       </p>
 
-      <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
-      <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
+      <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
 
-      {loading && <p>Cargando...</p>}
-
-      {!loading && trabajadores.length > 0 && (
-        <ul>
-          {trabajadores.map((t, i) => (
-            <li key={i}>
-              {t.nombre} ({t.fecha})
-            </li>
+      {mostrar && (
+        <div>
+          {trabajadores.map((trabajador, index) => (
+            <p key={index}>{trabajador.nombre}</p>
           ))}
-        </ul>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
