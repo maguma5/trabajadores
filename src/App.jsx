@@ -1,11 +1,16 @@
-import { useState } from "react";
-import { useTrabajadoresFiltrados } from "./libs/hooks/useTrabajadoresFiltrados";
+import { useEffect, useState } from "react";
+import Logo from "./assets/iconosegura.jpg";
+import viteLogo from "/vite.svg";
+
+import "./App.css";
+import { useTrabajadores } from "./libs/hooks/useTrabajadores";
+import { useTrabajadoresPorFiltro } from "./libs/hooks/hookdia";
 
 function App() {
+  const { useTrabajadores } = useTrabajadores();
+  const [mostrar, setMostrar] = useState(false);
   const [modo, setModo] = useState(null);
-
-  const empresa = "Segura"; // puedes hacerlo dinámico si quieres
-  const hoy = new Date().toISOString().split("T")[0];
+  const empresa = "Segura";
   const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
     .toISOString()
     .split("T")[0];
@@ -16,8 +21,7 @@ function App() {
   )
     .toISOString()
     .split("T")[0];
-
-  const { trabajadores, loading } = useTrabajadoresFiltrados({
+  const { trabajadores, loading } = useTrabajadoresPorFiltro({
     empresa,
     desde: modo === "dia" ? hoy : inicioMes,
     hasta: modo === "dia" ? hoy : finMes,
@@ -25,7 +29,14 @@ function App() {
 
   return (
     <div>
-      <h1>Control de Presencia</h1>
+      <h1>EMPRESA</h1>
+
+      <img src={Logo} alt="Logo de la empresa" width="200" />
+
+      <p>
+        Bienvenido al sistema de control de presencia de los trabajadores de la
+        obra
+      </p>
 
       <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
       <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
