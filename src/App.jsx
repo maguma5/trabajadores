@@ -35,7 +35,7 @@ function App() {
 
       <p>
         Bienvenido al sistema de control de presencia de los trabajadores de la
-        obra
+        obra San Carlos
       </p>
 
       <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
