@@ -6,7 +6,7 @@ import { useTrabajadores } from "./libs/hooks/useTrabajadores";
 import { useTrabajadoresFiltrados } from "./libs/hooks/hookdia";
 
 function App() {
-  // const { trabajadores } = useTrabajadores();
+  const { trabajadores } = useTrabajadores();
   const [mostrar, setMostrar] = useState(false);
   /* const hoy = new Date().toISOString().split("T")[0];
   const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
