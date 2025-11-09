@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Logo from "./assets/iconosegura.jpg";
 import "./App.css";
-import { useTrabajadoresFiltrados } from "./libs/hooks/hookdia";
+import { useTrabajadoresFiltrados } from "./libs/hooks/hoodia";
 
 function App() {
   const [modo, setModo] = useState(null);
