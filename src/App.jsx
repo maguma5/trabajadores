@@ -1,63 +1,36 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Logo from "./assets/iconosegura.jpg";
 import "./App.css";
-import { useTrabajadoresFiltrados } from "./libs/hooks/hoodia";
+//import Appseleccion from "./Appseleccion";
+import Appseleccion from "./AppseleccionPrueba";
 
 function App() {
-  const [modo, setModo] = useState(null);
-  const [mostrar, setMostrar] = useState(false);
-  const [trabajadores, setTrabajadores] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const empresa = "Segura"; // puedes hacerlo dinámico si quieres
-  const hoy = new Date().toISOString().split("T")[0];
-  const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-    .toISOString()
-    .split("T")[0];
-  const finMes = new Date(
-    new Date().getFullYear(),
-    new Date().getMonth() + 1,
-    0
-  )
-    .toISOString()
-    .split("T")[0];
-
-  useEffect(() => {
-    const fetchTrabajadores = async () => {
-      if (!modo) return;
-      setLoading(true);
-      const { trabajadores: datos } = await useTrabajadoresFiltrados({
-        empresa,
-        desde: modo === "dia" ? hoy : inicioMes,
-        hasta: modo === "dia" ? hoy : finMes,
-      });
-      setTrabajadores(datos);
-      setLoading(false);
-    };
-
-    fetchTrabajadores();
-  }, [modo]);
+  const [modoSeleccionado, setModoSeleccionado] = useState(null);
+  const volverInicio = () => {
+    setModoSeleccionado(null);
+  };
 
   return (
-    <>
-      <h1>EMPRESA</h1>
-      <img src={Logo} alt="Logo de la empresa" width="200" />
-      <h1>Control de Presencia</h1>
-
-      <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
-      <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
-      <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
-
-      {loading && <p>Cargando...</p>}
-
-      {mostrar && (
+    <div>
+      {!modoSeleccionado ? (
         <div>
-          {trabajadores.map((trabajador, index) => (
-            <p key={index}>{trabajador.nombre}</p>
-          ))}
+          <h1>EMPRESA</h1>
+
+          <img src={Logo} alt="Logo de la empresa" width="200" />
+
+          <h1>Control de Presencia</h1>
+          <p>¿Qué tipo de listado quieres ver?</p>
+          <button onClick={() => setModoSeleccionado("dia")}>
+            Listar por día
+          </button>
+          <button onClick={() => setModoSeleccionado("mes")}>
+            Listar por mes
+          </button>
         </div>
+      ) : (
+        <Appseleccion modo={modoSeleccionado} volver={volverInicio} />
       )}
-    </>
+    </div>
   );
 }
 
