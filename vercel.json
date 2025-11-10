@@ -1,8 +1,11 @@
 {
   "routes": [
     {
+      "rewrites": [ { "source": "/(.*)", "destination": "/" } ],
       "src": "/",
       "methods": ["GET"]
     }
   ]
+
+
 }
