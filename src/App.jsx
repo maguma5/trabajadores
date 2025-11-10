@@ -2,7 +2,7 @@ import { useState } from "react";
 import Logo from "./assets/iconosegura.jpg";
 import "./App.css";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
-import Appseleccion from "./Appseleccion";
+import Appseleccion from "./Appseleccion.jsx";
 
 function App() {
   const [modoSeleccionado, setModoSeleccionado] = useState(null);
