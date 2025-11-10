@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
-import { useEmpresas } from "./libs/hooks/useEmpresas";
+//import { useEmpresas } from "./libs/hooks/useEmpresas";
 
 function Appseleccion() {
   //const { empresas, loading1 } = useEmpresas();
-  const { empresas } = useEmpresas();
+  //const { empresas } = useEmpresas();
   const [empresaSeleccionada, setEmpresaSeleccionada] = useState("");
   const [fechaSeleccionada, setFechaSeleccionada] = useState("");
 
