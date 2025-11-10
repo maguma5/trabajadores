@@ -20,7 +20,7 @@ function App() {
       <img src={Logo} alt="Logo de la empresa" width="200" />
 
       <h1>Control de Presencia</h1>
-      <p>¿Qué tipo de listado quieres ver?</p>
+      <p>¿Qué tipo de listado quieres ver otra vez?</p>
 
       <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
       <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
