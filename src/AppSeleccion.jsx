@@ -23,12 +23,12 @@ function Appseleccion() {
       >
         <option value="">Selecciona una empresa</option>
 
-        {empresas.length > 0 &&
+        {/* {empresas.length > 0 &&
           empresas.map((e, i) => (
             <option key={i} value={e}>
               {e}
             </option>
-          ))}
+          ))} */}
       </select>
       <label>Fecha:</label>
       <input
