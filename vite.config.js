@@ -16,12 +16,4 @@ export default defineConfig({
       "@": "/src",
     },
   },
-
-  plugins: [
-    react({
-      babel: {
-        plugins: [["babel-plugin-react-compiler"]],
-      },
-    }),
-  ],
 });
