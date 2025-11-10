@@ -5,7 +5,7 @@ import { useTrabajadores } from "./libs/hooks/useTrabajadores";
 //import Appseleccion from "./AppseleccionPrueba";
 
 function App() {
-  //const [modoSeleccionado, setModoSeleccionado] = useState(null);
+  const [modoSeleccionado, setModoSeleccionado] = useState(null);
   const { trabajadores } = useTrabajadores();
   const [mostrar, setMostrar] = useState(false);
 
