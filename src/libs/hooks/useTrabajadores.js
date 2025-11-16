@@ -1,32 +1,64 @@
 import { useEffect, useState } from "react";
-import { useFirebase } from "./useFirebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../firebase"; // Asegúrate de que este sea tu archivo de configuración
 
-export const getTrabajadoresPorFecha = async (fecha) => {
-  const { db } = useFirebase();
-  //const [trabajadores, setTrabajadores] = useState([]);
-  const ref = collection(db, "trabajadores");
-  const q = query(ref, where("fecha", "==", fecha));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => doc.data());
-};
+function formatearFecha(fechaInput) {
+  const [año, mes, dia] = fechaInput.split("-");
+  return `${dia}-${mes}-${año}`;
+}
 
-export const useTrabajadores = () => {
-  const { db } = useFirebase();
+function extraerMes(fecha) {
+  const partes = fecha.split("-");
+  return `${partes[1]}-${partes[2]}`; // MM-yyyy
+}
+
+export function useTrabajadores(modo = "", fechaSeleccionada = "") {
   const [trabajadores, setTrabajadores] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!db) return;
-    const unsubscribe = onSnapshot(
-      collection(db, "trabajadores"),
-      (snapshot) => {
-        const lista = snapshot.docs.map((doc) => doc.data());
-        setTrabajadores(lista); // ✅ reemplaza en lugar de acumular
-      }
-    );
+    async function fetchTrabajadores() {
+      setLoading(true);
+      try {
+        const ref = collection(db, "trabajadores");
+        const snapshot = await getDocs(ref);
 
-    return () => unsubscribe();
-  }, [db]);
-  console.log("Trabajadores cargados:", trabajadores.length);
-  return { trabajadores };
-};
+        const todos = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const filtrados = todos.filter((t) => {
+          if (!t.fecha) return false;
+
+          if (modo === "dia") {
+            return t.fecha === formatearFecha(fechaSeleccionada);
+          }
+
+          if (modo === "mes") {
+            const mesTrabajador = extraerMes(t.fecha);
+            const mesSeleccionado = extraerMes(
+              formatearFecha(fechaSeleccionada)
+            );
+            return mesTrabajador === mesSeleccionado;
+          }
+
+          return true;
+        });
+
+        setTrabajadores(filtrados);
+      } catch (error) {
+        console.error("Error al obtener trabajadores:", error);
+        setTrabajadores([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (modo && fechaSeleccionada) {
+      fetchTrabajadores();
+    }
+  }, [modo, fechaSeleccionada]);
+
+  return { trabajadores, loading };
+}
