@@ -19,7 +19,7 @@ function agruparPorEmpresa(trabajadores) {
 }
 
 function obtenerDiasDelMes(fechaMes) {
-  const [año, mes] = fechaMes.split("-");
+  const [mes, año] = fechaMes.split("/");
   const dias = [];
   const totalDias = new Date(año, mes, 0).getDate(); // último día del mes
 
