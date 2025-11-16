@@ -25,7 +25,7 @@ function App() {
           onChange={(e) => setFechaSeleccionada(e.target.value)}
         />
       )}
-      console.log("Fecha seleccionada:", fechaSeleccionada);
+
       {modo === "mes" && (
         <input
           type="month"
