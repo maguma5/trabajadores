@@ -84,7 +84,7 @@ function construirMatriz(trabajadores, empresa, fechaMes) {
   return { dias, matriz };
 }
 
-function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
+function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
   const { dias, matriz } = construirMatriz(trabajadores, empresa, fechaMes);
 
   return (
@@ -114,7 +114,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
   );
 }
 
-/* function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
+function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
   const dias = obtenerDiasDelMes(fechaMes);
   const lista = filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes);
 
@@ -162,7 +162,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       </div>
     </div>
   );
-} */
+}
 
 function convertirMes(fechaMes) {
   const [año, mes] = fechaMes.split("-");
