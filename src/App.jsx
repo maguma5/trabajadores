@@ -32,10 +32,11 @@ function obtenerDiasDelMes(fechaMes) {
 }
 
 function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
-  const mesSeleccionado = convertirMes(fechaMes); // MM-yyyy
+  //const mesSeleccionado = convertirMes(fechaMes); // MM-yyyy
   return trabajadores.filter(
     //console.log("empresa :", empresa, " y mesSeleccionado :", mesSeleccionado),
-    (t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
+    //(t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
+    (t) => t.empresa === empresa && t.fecha?.includes(fechaMes)
   );
 }
 
