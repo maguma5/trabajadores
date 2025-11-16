@@ -32,7 +32,7 @@ function App() {
       <h1>EMPRESA</h1>
       <img src={Logo} alt="Logo de la empresa" width="200" />
       <h1>Control de Presencia</h1>
-      <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
+      <button onClick={() => setModo("dia")}>Ver trabajadores de un dia</button>
       <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
       {modo === "dia" && (
         <input
@@ -56,7 +56,10 @@ function App() {
         <div>
           {Object.entries(trabajadoresPorEmpresa).map(([empresa, lista]) => (
             <div key={empresa}>
-              <h3>{empresa}</h3>
+              <h3>
+                {empresa} — {lista.length} trabajador
+                {lista.length !== 1 ? "es" : ""}
+              </h3>
               {lista.map((trabajador, index) => (
                 <p key={index}>{trabajador.nombre}</p>
               ))}
@@ -64,7 +67,7 @@ function App() {
           ))}
         </div>
       )}
-      {mostrar && (
+      {/* {mostrar && (
         <div>
           {trabajadores.length > 0 ? (
             trabajadores.map((trabajador, index) => (
@@ -74,7 +77,7 @@ function App() {
             <p>No hay trabajadores para esa fecha</p>
           )}
         </div>
-      )}
+      )} */}
     </>
   );
 }
