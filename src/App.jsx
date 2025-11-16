@@ -1,40 +1,54 @@
-import { useState } from "react";
-import Logo from "./assets/iconosegura.jpg";
-import "./App.css";
+import { useState, useEffect } from "react";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
-import Appseleccion from "./Appseleccion.jsx";
+//import { useEmpresas } from "./libs/hooks/useEmpresas";
 
-function App() {
-  const [modoSeleccionado, setModoSeleccionado] = useState(null);
-  const { trabajadores } = useTrabajadores();
-  const [mostrar, setMostrar] = useState(false);
+function Appseleccion() {
+  //const { empresas, loading1 } = useEmpresas();
+  //const { empresas } = useEmpresas();
+  const [empresaSeleccionada, setEmpresaSeleccionada] = useState("");
+  const [fechaSeleccionada, setFechaSeleccionada] = useState("");
 
-  const volverInicio = () => {
-    setModoSeleccionado(null);
-  };
+  const { trabajadores, loading } = useTrabajadores(
+    empresaSeleccionada,
+    fechaSeleccionada
+  );
 
   return (
     <div>
-      {!modoSeleccionado ? (
-        <div>
-          <h1>EMPRESA</h1>
+      <h1>Filtrar trabajadores</h1>
+      <label>Empresa:</label>
+      <select
+        value={empresaSeleccionada}
+        onChange={(e) => setEmpresaSeleccionada(e.target.value)}
+      >
+        <option value="">Selecciona una empresa</option>
 
-          <img src={Logo} alt="Logo de la empresa" width="200" />
+        {empresas.length > 0 &&
+          empresas.map((e, i) => (
+            <option key={i} value={e}>
+              {e}
+            </option>
+          ))}
+      </select>
+      <label>Fecha:</label>
+      <input
+        type="date"
+        value={fechaSeleccionada}
+        onChange={(e) => setFechaSeleccionada(e.target.value)}
+      />
 
-          <h1>Control de Presencia</h1>
-          <p>¿Qué tipo de listado quieres ver?</p>
-          <button onClick={() => setModoSeleccionado("dia")}>
-            Listar por día
-          </button>
-          <button onClick={() => setModoSeleccionado("mes")}>
-            Listar por mes
-          </button>
-        </div>
-      ) : (
-        <Appseleccion modo={modoSeleccionado} volver={volverInicio} />
+      {loading && <p>Cargando...</p>}
+      {!loading && trabajadores.length > 0 && (
+        <ul>
+          {trabajadores.map((t, i) => (
+            <li key={i}>{t.empresa}</li>
+          ))}
+        </ul>
       )}
     </div>
   );
 }
 
-export default App;
+export default Appseleccion;
+
+//export default App;
