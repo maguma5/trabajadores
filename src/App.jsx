@@ -47,7 +47,7 @@ function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
 }
 
 function obtenerDiasDelMes(fechaMes) {
-  const [año, mes] = fechaMes.split("-");
+  const [mes, año] = fechaMes.split("-");
   const totalDias = new Date(año, mes, 0).getDate();
   const dias = [];
 
@@ -60,7 +60,8 @@ function obtenerDiasDelMes(fechaMes) {
 
 function construirMatriz(trabajadores, empresa, fechaMes) {
   const dias = obtenerDiasDelMes(fechaMes);
-  const mesSeleccionado = convertirMes(fechaMes); // "MM-yyyy"
+  //const mesSeleccionado = convertirMes(fechaMes); // "MM-yyyy"
+  const mesSeleccionado = fechaMes; // "MM-yyyy"
 
   const trabajadoresEmpresa = trabajadores.filter(
     (t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
@@ -113,7 +114,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
   );
 }
 
-function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
+/* function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
   const dias = obtenerDiasDelMes(fechaMes);
   const lista = filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes);
 
@@ -161,7 +162,7 @@ function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
       </div>
     </div>
   );
-}
+} */
 
 function convertirMes(fechaMes) {
   const [año, mes] = fechaMes.split("-");
