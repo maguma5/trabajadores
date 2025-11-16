@@ -5,7 +5,9 @@ import { useFirebase } from "./useFirebase";
 //import { db } from "../firebase"; // Asegúrate de que este sea tu archivo de configuración
 
 function formatearFecha(fechaInput) {
+  console.log("Fecha a formatear:", fechaInput);
   const [año, mes, dia] = fechaInput.split("-");
+  console.log("Fecha formateada:", `${dia}-${mes}-${año}`);
   return `${dia}-${mes}-${año}`;
 }
 
@@ -16,7 +18,7 @@ function extraerMes(fecha) {
 
 function convertirMes(fechaMes) {
   console.log("Fecha mes a convertir:", fechaMes);
-  const [año, mes] = fechaMes.split("-");
+  const [dia, mes, año] = fechaMes.split("-");
   console.log("Mes extraído:", mes);
   console.log("Año extraído:", año);
   return `${mes}-${año}`; // MM-yyyy
