@@ -32,13 +32,21 @@ function obtenerDiasDelMes(fechaMes) {
 }
 
 function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
-  //const mesSeleccionado = convertirMes(fechaMes); // MM-yyyy
-  console.log("cantidad de trabajadores a filtrar:", trabajadores.length);
-  return trabajadores.filter(
-    //console.log("empresa :", empresa, " y mesSeleccionado :", mesSeleccionado),
-    //(t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
+  console.log("🔍 Filtrando trabajadores...");
+  console.log("Empresa seleccionada:", empresa);
+  console.log("Mes seleccionado (formato yyyy-MM):", fechaMes);
+  console.log("Total trabajadores recibidos:", trabajadores.length);
+
+  const filtrados = trabajadores.filter(
     (t) => t.empresa === empresa && t.fecha?.includes(fechaMes)
   );
+
+  console.log("✅ Trabajadores filtrados:", filtrados.length);
+  filtrados.forEach((t, i) => {
+    console.log(`${i + 1}. ${t.nombre} — ${t.fecha}`);
+  });
+
+  return filtrados;
 }
 
 function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
