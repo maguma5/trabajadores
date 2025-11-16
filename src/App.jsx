@@ -14,14 +14,10 @@ function App() {
   return (
     <>
       <h1>EMPRESA</h1>
-
       <img src={Logo} alt="Logo de la empresa" width="200" />
-
       <h1>Control de Presencia</h1>
-
       <button onClick={() => setModo("dia")}>Ver trabajadores de hoy</button>
       <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
-
       {modo === "dia" && (
         <input
           type="date"
@@ -29,7 +25,7 @@ function App() {
           onChange={(e) => setFechaSeleccionada(e.target.value)}
         />
       )}
-
+      console.log("Fecha seleccionada:", fechaSeleccionada);
       {modo === "mes" && (
         <input
           type="month"
@@ -37,11 +33,8 @@ function App() {
           onChange={(e) => setFechaSeleccionada(e.target.value)}
         />
       )}
-
       <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
-
       {loading && <p>Cargando...</p>}
-
       {mostrar && (
         <div>
           {trabajadores.length > 0 ? (

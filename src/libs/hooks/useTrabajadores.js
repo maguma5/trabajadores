@@ -15,7 +15,10 @@ function extraerMes(fecha) {
 }
 
 function convertirMes(fechaMes) {
+  console.log("Fecha mes a convertir:", fechaMes);
   const [año, mes] = fechaMes.split("-");
+  console.log("Mes extraído:", mes);
+  console.log("Año extraído:", año);
   return `${mes}-${año}`; // MM-yyyy
 }
 
