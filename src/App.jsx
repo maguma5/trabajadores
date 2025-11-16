@@ -24,7 +24,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
     const [mes, año] = fechaMes.split("/");
     return `${mes.padStart(2, "0")}-${año}`; // "11-2025"
   }
-
+  console.log("Trabajadores en CuadriculaMes:", trabajadores);
   function obtenerDiasDelMes(fechaMes) {
     const [mes, año] = fechaMes.split("/");
     const totalDias = new Date(parseInt(año), parseInt(mes), 0).getDate();
@@ -45,7 +45,8 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
     const mesSeleccionado = normalizarMes(fechaMes); // "11-2025"
 
     const trabajadoresEmpresa = trabajadores.filter(
-      (t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
+      //(t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
+      (t) => t.empresa === empresa && t.fecha?.includes(fechaMes)
     );
 
     const nombresUnicos = [
