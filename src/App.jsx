@@ -3,7 +3,6 @@ import Logo from "./assets/iconosegura.jpg";
 
 import "./App.css";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
-import construirMatriz from "./libs/hooks/useTrabajadores";
 
 function agruparPorEmpresa(trabajadores) {
   const grupos = {};
@@ -45,6 +44,43 @@ function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
   console.log("Total trabajadores filtrados:", filtrados.length);
 
   return filtrados;
+}
+
+function obtenerDiasDelMes(fechaMes) {
+  const [año, mes] = fechaMes.split("-");
+  const totalDias = new Date(año, mes, 0).getDate();
+  const dias = [];
+
+  for (let i = 1; i <= totalDias; i++) {
+    dias.push(i.toString().padStart(2, "0")); // "01", "02", ...
+  }
+
+  return dias;
+}
+
+function construirMatriz(trabajadores, empresa, fechaMes) {
+  const dias = obtenerDiasDelMes(fechaMes);
+  const mesSeleccionado = convertirMes(fechaMes); // "MM-yyyy"
+
+  const trabajadoresEmpresa = trabajadores.filter(
+    (t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
+  );
+
+  const nombresUnicos = [...new Set(trabajadoresEmpresa.map((t) => t.nombre))];
+
+  const matriz = nombresUnicos.map((nombre) => {
+    const fila = { nombre };
+    dias.forEach((dia) => {
+      const fechaCompleta = `${dia}-${mesSeleccionado}`;
+      const presente = trabajadoresEmpresa.some(
+        (t) => t.nombre === nombre && t.fecha === fechaCompleta
+      );
+      fila[fechaCompleta] = presente ? "✅" : "";
+    });
+    return fila;
+  });
+
+  return { dias, matriz };
 }
 
 function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
