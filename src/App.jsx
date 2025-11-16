@@ -74,7 +74,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
 }
 
 function convertirMes(fechaMes) {
-  const [año, mes] = fechaMes.split("/");
+  const [año, mes] = fechaMes.split("-");
   return `${mes}/${año}`;
 }
 
