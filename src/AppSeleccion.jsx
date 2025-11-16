@@ -1,47 +1,35 @@
 import { useState, useEffect } from "react";
-//import { getEmpresasUnicas } from "./libs/hooks/empresas/getEmpresasUnicas";
-//import { getEmpresasUnicas } from "./libs/hooks/empresas";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
-//import { getTrabajadoresPorFecha } from "./libs/hooks/useTrabajadores";
+//import { useEmpresas } from "./libs/hooks/useEmpresas";
 
-function Appseleccion({ modo, volver }) {
-  const [fechaSeleccionada, setFechaSeleccionada] = useState("");
+function Appseleccion() {
+  //const { empresas, loading1 } = useEmpresas();
+  //const { empresas } = useEmpresas();
   const [empresaSeleccionada, setEmpresaSeleccionada] = useState("");
-  const [trabajadores, setTrabajadores] = useState([]);
-  const [empresas, setEmpresas] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [fechaSeleccionada, setFechaSeleccionada] = useState("");
 
-  /* useEffect(() => {
-    if (modo === "dia") {
-      getEmpresasUnicas().then(setEmpresas);
-    }
-  }, [modo]); */
-
-  const cargarTrabajadores = async () => {
-    setLoading(true);
-    //const todos = await getTrabajadoresPorFecha(fechaSeleccionada); // función que trae todos los de ese día
-    const todos = useTrabajadores();
-    let filtrados = todos;
-
-    if (empresaSeleccionada) {
-      filtrados = todos.filter((t) => t.empresa === empresaSeleccionada);
-    }
-
-    setTrabajadores(filtrados);
-    setLoading(false);
-  };
-
-  const agrupadosPorEmpresa = trabajadores.reduce((acc, t) => {
-    if (!acc[t.empresa]) acc[t.empresa] = [];
-    acc[t.empresa].push(t);
-    return acc;
-  }, {});
+  const { trabajadores, loading } = useTrabajadores(
+    empresaSeleccionada,
+    fechaSeleccionada
+  );
 
   return (
     <div>
-      <button onClick={volver}>⬅️ Volver</button>
-      <h2>Listado por día</h2>
+      <h1>Filtrar trabajadores</h1>
+      <label>Empresa:</label>
+      <select
+        value={empresaSeleccionada}
+        onChange={(e) => setEmpresaSeleccionada(e.target.value)}
+      >
+        <option value="">Selecciona una empresa</option>
 
+        {empresas.length > 0 &&
+          empresas.map((e, i) => (
+            <option key={i} value={e}>
+              {e}
+            </option>
+          ))}
+      </select>
       <label>Fecha:</label>
       <input
         type="date"
@@ -49,44 +37,13 @@ function Appseleccion({ modo, volver }) {
         onChange={(e) => setFechaSeleccionada(e.target.value)}
       />
 
-      <label>Empresa (opcional):</label>
-      <select
-        value={empresaSeleccionada}
-        onChange={(e) => setEmpresaSeleccionada(e.target.value)}
-      >
-        <option value="">Todas</option>
-        {empresas.map((e, i) => (
-          <option key={i} value={e}>
-            {e}
-          </option>
-        ))}
-      </select>
-
-      <button onClick={cargarTrabajadores}>Buscar</button>
-
       {loading && <p>Cargando...</p>}
-
       {!loading && trabajadores.length > 0 && (
-        <div>
-          {empresaSeleccionada ? (
-            <ul>
-              {trabajadores.map((t, i) => (
-                <li key={i}>{t.nombre}</li>
-              ))}
-            </ul>
-          ) : (
-            Object.entries(agrupadosPorEmpresa).map(([empresa, lista]) => (
-              <div key={empresa}>
-                <h3>{empresa}</h3>
-                <ul>
-                  {lista.map((t, i) => (
-                    <li key={i}>{t.nombre}</li>
-                  ))}
-                </ul>
-              </div>
-            ))
-          )}
-        </div>
+        <ul>
+          {trabajadores.map((t, i) => (
+            <li key={i}>{t.empresa}</li>
+          ))}
+        </ul>
       )}
     </div>
   );
