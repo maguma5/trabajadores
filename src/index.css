@@ -66,15 +66,7 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-  select,
-input[type="month"],
-input[type="date"] {
-  background-color: #f9f9f9;
-  color: #213547;
-}
-}
-
-select,
+ select,
 input[type="month"],
 input[type="date"] {
   border-radius: 8px;
@@ -100,3 +92,6 @@ input[type="month"]:focus,
 input[type="date"]:focus {
   outline: 4px auto -webkit-focus-ring-color;
 }
+}
+
+
