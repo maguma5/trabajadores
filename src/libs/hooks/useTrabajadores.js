@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../firebase"; // Asegúrate de que este sea tu archivo de configuración
+import { useFirebase } from "./useFirebase";
+
+//import { db } from "../firebase"; // Asegúrate de que este sea tu archivo de configuración
 
 function formatearFecha(fechaInput) {
   const [año, mes, dia] = fechaInput.split("-");
@@ -13,6 +15,7 @@ function extraerMes(fecha) {
 }
 
 export function useTrabajadores(modo = "", fechaSeleccionada = "") {
+  const { db } = useFirebase();
   const [trabajadores, setTrabajadores] = useState([]);
   const [loading, setLoading] = useState(false);
 
