@@ -150,13 +150,16 @@ function App() {
         </div>
       )}
 
-      {empresaSeleccionada && fechaSeleccionada && trabajadores.length > 0 && (
-        <CuadriculaMes
-          trabajadores={trabajadores}
-          empresa={empresaSeleccionada}
-          fechaMes={fechaSeleccionada}
-        />
-      )}
+      {mostrar &&
+        empresaSeleccionada &&
+        fechaSeleccionada &&
+        trabajadores.length > 0 && (
+          <CuadriculaMes
+            trabajadores={trabajadores}
+            empresa={empresaSeleccionada}
+            fechaMes={convertirMes(fechaSeleccionada)}
+          />
+        )}
 
       {/* {mostrar && (
         <div>
