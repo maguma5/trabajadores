@@ -82,7 +82,7 @@ function App() {
   const [modo, setModo] = useState(""); // "dia" o "mes"
   const [fechaSeleccionada, setFechaSeleccionada] = useState("");
 
-  const empresasUnicas = [...new Set(trabajadores.map((t) => t.empresa))];
+  //const empresasUnicas = [...new Set(trabajadores.map((t) => t.empresa))];
   const [empresaSeleccionada, setEmpresaSeleccionada] = useState("");
 
   const { trabajadores, loading } = useTrabajadores(modo, fechaSeleccionada);
