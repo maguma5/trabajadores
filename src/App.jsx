@@ -34,7 +34,7 @@ function obtenerDiasDelMes(fechaMes) {
 function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
   const mesSeleccionado = convertirMes(fechaMes); // MM-yyyy
   return trabajadores.filter(
-    console.log("empresa :", empresa, " y mesSeleccionado :", mesSeleccionado),
+    //console.log("empresa :", empresa, " y mesSeleccionado :", mesSeleccionado),
     (t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
   );
 }
@@ -74,7 +74,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
 }
 
 function convertirMes(fechaMes) {
-  const [año, mes] = fechaMes.split("-");
+  const [año, mes] = fechaMes.split("/");
   return `${mes}/${año}`;
 }
 
