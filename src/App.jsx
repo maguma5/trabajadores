@@ -51,7 +51,11 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
     const nombresUnicos = [
       ...new Set(trabajadoresEmpresa.map((t) => t.nombre)),
     ];
-
+    console.log(
+      "📋 Trabajadores de la empresa en el mes:",
+      trabajadoresEmpresa
+    );
+    console.log("👤 Nombres únicos:", nombresUnicos);
     const matriz = nombresUnicos.map((nombre) => {
       const fila = { nombre };
       dias.forEach((dia) => {
@@ -63,13 +67,13 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       });
       return fila;
     });
-
+    console.log("📊 Matriz generada:", matriz);
     return { dias, matriz };
   }
 
   // ✅ Aquí ya puedes usar la matriz
   const { dias, matriz } = construirMatriz(trabajadores, empresa, fechaMes);
-
+  console.log("🧾 Matriz recibida en CuadriculaMes:", matriz);
   return (
     <div style={{ overflowX: "auto" }}>
       <table border="1" cellPadding="6" style={{ borderCollapse: "collapse" }}>
@@ -86,7 +90,8 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
             <tr key={i}>
               <td>{fila.nombre}</td>
               {dias.map((dia) => {
-                const fecha = `${dia}-${normalizarMes(fechaMes)}`;
+                //const fecha = `${dia}-${normalizarMes(fechaMes)}`;
+                const fecha = `${dia}-${fechaMes}`;
                 return <td key={dia}>{fila[fecha]}</td>;
               })}
             </tr>
