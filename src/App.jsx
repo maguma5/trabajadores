@@ -81,9 +81,10 @@ function App() {
   const [mostrar, setMostrar] = useState(false);
   const [modo, setModo] = useState(""); // "dia" o "mes"
   const [fechaSeleccionada, setFechaSeleccionada] = useState("");
-
-  //const empresasUnicas = [...new Set(trabajadores.map((t) => t.empresa))];
   const [empresaSeleccionada, setEmpresaSeleccionada] = useState("");
+  const empresasUnicas = trabajadores
+    ? [...new Set(trabajadores.map((t) => t.empresa || "Sin empresa"))]
+    : [];
 
   const { trabajadores, loading } = useTrabajadores(modo, fechaSeleccionada);
   const trabajadoresPorEmpresa =
