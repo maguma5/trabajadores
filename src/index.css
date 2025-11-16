@@ -66,4 +66,37 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+  select,
+input[type="month"],
+input[type="date"] {
+  background-color: #f9f9f9;
+  color: #213547;
+}
+}
+
+select,
+input[type="month"],
+input[type="date"] {
+  border-radius: 8px;
+  border: 1px solid #213547;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #af7c0d;
+  color: white;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+select:hover,
+input[type="month"]:hover,
+input[type="date"]:hover {
+  border-color: #646cff;
+}
+
+select:focus,
+input[type="month"]:focus,
+input[type="date"]:focus {
+  outline: 4px auto -webkit-focus-ring-color;
 }
