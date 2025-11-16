@@ -41,10 +41,7 @@ function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
     (t) => t.empresa === empresa && t.fecha?.includes(fechaMes)
   );
 
-  console.log("✅ Trabajadores filtrados:", filtrados.length);
-  filtrados.forEach((t, i) => {
-    console.log(`${i + 1}. ${t.nombre} — ${t.fecha}`);
-  });
+  console.log("Total trabajadores filtrados:", filtrados.length);
 
   return filtrados;
 }
@@ -52,6 +49,12 @@ function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
 function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
   const dias = obtenerDiasDelMes(fechaMes);
   const lista = filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes);
+
+  console.log("📅 Días generados para el mes:", dias);
+  console.log(
+    "👥 Trabajadores filtrados:",
+    lista.map((t) => `${t.nombre} (${t.fecha})`)
+  );
 
   return (
     <div>
@@ -67,11 +70,21 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       >
         {dias.map((dia) => {
           const presentes = lista.filter((t) => t.fecha === dia);
+
+          console.log(`📆 Día: ${dia} → ${presentes.length} trabajador(es)`);
+          presentes.forEach((t, i) => {
+            console.log(`   ${i + 1}. ${t.nombre} — ${t.fecha}`);
+          });
+
           return (
             <div key={dia} style={{ border: "1px solid #ccc", padding: "6px" }}>
               <strong>{dia}</strong>
               {presentes.length > 0 ? (
-                presentes.map((t, i) => <p key={i}>{t.nombre}</p>)
+                presentes.map((t, i) => (
+                  <p key={i}>
+                    {t.nombre} ({t.fecha})
+                  </p>
+                ))
               ) : (
                 <p style={{ color: "#aaa" }}>—</p>
               )}
