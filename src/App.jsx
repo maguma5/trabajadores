@@ -7,6 +7,8 @@ import { useTrabajadores } from "./libs/hooks/useTrabajadores";
 function App() {
   const { trabajadores } = useTrabajadores();
   const [mostrar, setMostrar] = useState(false);
+  const [modo, setModo] = useState(""); // "dia" o "mes"
+  const [fechaSeleccionada, setFechaSeleccionada] = useState("");
 
   return (
     <>
@@ -22,6 +24,22 @@ function App() {
       {/* {loading && <p>Cargando...</p>} */}
 
       <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
+
+      {modo === "dia" && (
+        <input
+          type="date"
+          value={fechaSeleccionada}
+          onChange={(e) => setFechaSeleccionada(e.target.value)}
+        />
+      )}
+
+      {modo === "mes" && (
+        <input
+          type="month"
+          value={fechaSeleccionada}
+          onChange={(e) => setFechaSeleccionada(e.target.value)}
+        />
+      )}
 
       {mostrar && (
         <div>
