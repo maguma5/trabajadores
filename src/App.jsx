@@ -3,6 +3,7 @@ import Logo from "./assets/iconosegura.jpg";
 
 import "./App.css";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
+import construirMatriz from "./libs/hooks/useTrabajadores";
 
 function agruparPorEmpresa(trabajadores) {
   const grupos = {};
@@ -47,6 +48,36 @@ function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
 }
 
 function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
+  const { dias, matriz } = construirMatriz(trabajadores, empresa, fechaMes);
+
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table border="1" cellPadding="6" style={{ borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th>Trabajador</th>
+            {dias.map((dia) => (
+              <th key={dia}>{dia}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {matriz.map((fila, i) => (
+            <tr key={i}>
+              <td>{fila.nombre}</td>
+              {dias.map((dia) => {
+                const fecha = `${dia}-${convertirMes(fechaMes)}`;
+                return <td key={dia}>{fila[fecha]}</td>;
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
   const dias = obtenerDiasDelMes(fechaMes);
   const lista = filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes);
 
