@@ -35,18 +35,11 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
     return dias;
   }
 
-  /*  function convertirMes(fechaMes) {
-    const [año, mes] = fechaMes.split("-");
-    return `${mes}-${año}`;
-  } */
-
   function construirMatriz(trabajadores, empresa, fechaMes) {
     const dias = obtenerDiasDelMes(fechaMes);
-    //const mesSeleccionado = normalizarMes(fechaMes); // "11-2025"
     const mesSeleccionado = fechaMes; // "11-2025"
 
     const trabajadoresEmpresa = trabajadores.filter(
-      //(t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
       (t) => t.empresa === empresa && t.fecha?.includes(fechaMes)
     );
 
@@ -70,13 +63,11 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       });
       return fila;
     });
-    //console.log("📊 Matriz generada:", matriz);
     return { dias, matriz };
   }
 
   // ✅ Aquí ya puedes usar la matriz
   const { dias, matriz } = construirMatriz(trabajadores, empresa, fechaMes);
-  //console.log("🧾 Matriz recibida en CuadriculaMes:", matriz);
   return (
     <div style={{ overflowX: "auto" }}>
       <table border="1" cellPadding="6" style={{ borderCollapse: "collapse" }}>
@@ -108,12 +99,6 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
 function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
   const dias = obtenerDiasDelMes(fechaMes);
   const lista = filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes);
-
-  console.log("📅 Días generados para el mes:", dias);
-  console.log(
-    "👥 Trabajadores filtrados:",
-    lista.map((t) => `${t.nombre} (${t.fecha})`)
-  );
 
   return (
     <div>
@@ -165,6 +150,7 @@ function App() {
   const [modo, setModo] = useState(""); // "dia" o "mes"
   const [fechaSeleccionada, setFechaSeleccionada] = useState("");
   const { trabajadores, loading } = useTrabajadores(modo, fechaSeleccionada);
+  const [inputFocus, setInputFocus] = useState(false);
 
   const trabajadoresPorEmpresa =
     modo === "dia" ? agruparPorEmpresa(trabajadores) : {};
@@ -191,9 +177,13 @@ function App() {
       {modo === "mes" && (
         <>
           <input
-            type="month"
+            type={inputFocus ? "month" : "text"}
+            onFocus={() => setInputFocus(true)}
+            onBlur={() => setInputFocus(false)}
+            placeholder="Seleccione una fecha"
             value={fechaSeleccionada}
             onChange={(e) => setFechaSeleccionada(e.target.value)}
+            style={{ borderRadius: "8px", padding: "0.6em 1.2em" }}
           />
 
           <select
@@ -209,6 +199,7 @@ function App() {
           </select>
         </>
       )}
+
       <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
       {loading && <p>Cargando empresas...</p>}
 
@@ -242,18 +233,6 @@ function App() {
             fechaMes={convertirMes(fechaSeleccionada)}
           />
         )}
-
-      {/* {mostrar && (
-        <div>
-          {trabajadores.length > 0 ? (
-            trabajadores.map((trabajador, index) => (
-              <p key={index}>{trabajador.nombre}</p>
-            ))
-          ) : (
-            <p>No hay trabajadores para esa fecha</p>
-          )}
-        </div>
-      )} */}
     </>
   );
 }
