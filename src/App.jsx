@@ -62,6 +62,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       const fila = { nombre };
       dias.forEach((dia) => {
         const fechaCompleta = `${dia}/${mesSeleccionado}`; // "dd-MM-yyyy"
+        console.log("Verificando presencia para:", nombre, fechaCompleta);
         const presente = trabajadoresEmpresa.some(
           (t) => t.nombre === nombre && t.fecha === fechaCompleta
         );
