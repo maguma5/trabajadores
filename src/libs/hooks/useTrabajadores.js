@@ -14,6 +14,11 @@ function extraerMes(fecha) {
   return `${partes[1]}-${partes[2]}`; // MM-yyyy
 }
 
+function convertirMes(fechaMes) {
+  const [año, mes] = fechaMes.split("-");
+  return `${mes}-${año}`; // MM-yyyy
+}
+
 export function useTrabajadores(modo = "", fechaSeleccionada = "") {
   const { db } = useFirebase();
   const [trabajadores, setTrabajadores] = useState([]);
@@ -39,8 +44,8 @@ export function useTrabajadores(modo = "", fechaSeleccionada = "") {
           }
 
           if (modo === "mes") {
-            const mesTrabajador = extraerMes(t.fecha);
-            const mesSeleccionado = extraerMes(
+            const mesTrabajador = convertirMes(t.fecha);
+            const mesSeleccionado = convertirMes(
               formatearFecha(fechaSeleccionada)
             );
             return mesTrabajador === mesSeleccionado;
