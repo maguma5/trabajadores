@@ -61,7 +61,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
     const matriz = nombresUnicos.map((nombre) => {
       const fila = { nombre };
       dias.forEach((dia) => {
-        const fechaCompleta = `${dia}-${mesSeleccionado}`; // "dd-MM-yyyy"
+        const fechaCompleta = `${dia}/${mesSeleccionado}`; // "dd-MM-yyyy"
         const presente = trabajadoresEmpresa.some(
           (t) => t.nombre === nombre && t.fecha === fechaCompleta
         );
