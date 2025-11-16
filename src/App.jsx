@@ -42,7 +42,8 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
 
   function construirMatriz(trabajadores, empresa, fechaMes) {
     const dias = obtenerDiasDelMes(fechaMes);
-    const mesSeleccionado = normalizarMes(fechaMes); // "11-2025"
+    //const mesSeleccionado = normalizarMes(fechaMes); // "11-2025"
+    const mesSeleccionado = fechaMes; // "11-2025"
 
     const trabajadoresEmpresa = trabajadores.filter(
       //(t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
