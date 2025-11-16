@@ -62,7 +62,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       const fila = { nombre };
       dias.forEach((dia) => {
         const fechaCompleta = `${dia}/${mesSeleccionado}`; // "dd-MM-yyyy"
-        console.log("Verificando presencia para:", nombre, fechaCompleta);
+
         const presente = trabajadoresEmpresa.some(
           (t) => t.nombre === nombre && t.fecha === fechaCompleta
         );
@@ -70,13 +70,13 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       });
       return fila;
     });
-    console.log("📊 Matriz generada:", matriz);
+    //console.log("📊 Matriz generada:", matriz);
     return { dias, matriz };
   }
 
   // ✅ Aquí ya puedes usar la matriz
   const { dias, matriz } = construirMatriz(trabajadores, empresa, fechaMes);
-  console.log("🧾 Matriz recibida en CuadriculaMes:", matriz);
+  //console.log("🧾 Matriz recibida en CuadriculaMes:", matriz);
   return (
     <div style={{ overflowX: "auto" }}>
       <table border="1" cellPadding="6" style={{ borderCollapse: "collapse" }}>
@@ -94,7 +94,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
               <td>{fila.nombre}</td>
               {dias.map((dia) => {
                 //const fecha = `${dia}-${normalizarMes(fechaMes)}`;
-                const fecha = `${dia}-${fechaMes}`;
+                const fecha = `${dia}/${fechaMes}`;
                 return <td key={dia}>{fila[fecha]}</td>;
               })}
             </tr>
