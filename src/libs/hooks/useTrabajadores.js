@@ -21,7 +21,7 @@ function convertirMes(fechaMes) {
   const [dia, mes, año] = fechaMes.split("-");
   console.log("Mes extraído:", mes);
   console.log("Año extraído:", año);
-  return `${mes}/${año}`; // MM/yyyy
+  return `${mes}-${año}`; // MM-yyyy
 }
 
 export function useTrabajadores(modo = "", fechaSeleccionada = "") {
