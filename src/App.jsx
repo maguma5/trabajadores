@@ -20,12 +20,17 @@ function agruparPorEmpresa(trabajadores) {
 
 function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
   // ✅ Estas funciones van aquí, fuera del JSX
+  function normalizarMes(fechaMes) {
+    const [mes, año] = fechaMes.split("/");
+    return `${mes.padStart(2, "0")}-${año}`; // "11-2025"
+  }
+
   function obtenerDiasDelMes(fechaMes) {
-    const [mes, año] = fechaMes.split("-");
-    const totalDias = new Date(año, mes, 0).getDate();
+    const [mes, año] = fechaMes.split("/");
+    const totalDias = new Date(parseInt(año), parseInt(mes), 0).getDate();
     const dias = [];
     for (let i = 1; i <= totalDias; i++) {
-      dias.push(i.toString().padStart(2, "0"));
+      dias.push(i.toString().padStart(2, "0")); // "01", "02", ...
     }
     return dias;
   }
@@ -37,18 +42,20 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
 
   function construirMatriz(trabajadores, empresa, fechaMes) {
     const dias = obtenerDiasDelMes(fechaMes);
-    //const mesSeleccionado = convertirMes(fechaMes);
-    const mesSeleccionado = fechaMes;
+    const mesSeleccionado = normalizarMes(fechaMes); // "11-2025"
+
     const trabajadoresEmpresa = trabajadores.filter(
       (t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
     );
+
     const nombresUnicos = [
       ...new Set(trabajadoresEmpresa.map((t) => t.nombre)),
     ];
+
     const matriz = nombresUnicos.map((nombre) => {
       const fila = { nombre };
       dias.forEach((dia) => {
-        const fechaCompleta = `${dia}-${mesSeleccionado}`;
+        const fechaCompleta = `${dia}-${mesSeleccionado}`; // "dd-MM-yyyy"
         const presente = trabajadoresEmpresa.some(
           (t) => t.nombre === nombre && t.fecha === fechaCompleta
         );
@@ -56,6 +63,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       });
       return fila;
     });
+
     return { dias, matriz };
   }
 
@@ -78,8 +86,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
             <tr key={i}>
               <td>{fila.nombre}</td>
               {dias.map((dia) => {
-                //const fecha = `${dia}-${convertirMes(fechaMes)}`;
-                const fecha = `${dia}-${fechaMes}`;
+                const fecha = `${dia}-${normalizarMes(fechaMes)}`;
                 return <td key={dia}>{fila[fecha]}</td>;
               })}
             </tr>
