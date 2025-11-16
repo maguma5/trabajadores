@@ -70,10 +70,18 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
   const { dias, matriz } = construirMatriz(trabajadores, empresa, fechaMes);
   return (
     <div style={{ overflowX: "auto" }}>
-      <table border="1" cellPadding="6" style={{ borderCollapse: "collapse" }}>
+      <table
+        border="1"
+        cellPadding="6"
+        style={{
+          tableLayout: "auto",
+          width: "auto",
+          borderCollapse: "collapse",
+        }}
+      >
         <thead>
           <tr>
-            <th>Trabajador</th>
+            <th style={{ whiteSpace: "nowrap" }}>Trabajador</th>
             {dias.map((dia) => (
               <th key={dia}>{dia}</th>
             ))}
@@ -82,7 +90,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
         <tbody>
           {matriz.map((fila, i) => (
             <tr key={i}>
-              <td>{fila.nombre}</td>
+              <td style={{ whiteSpace: "nowrap" }}>{fila.nombre}</td>
               {dias.map((dia) => {
                 //const fecha = `${dia}-${normalizarMes(fechaMes)}`;
                 const fecha = `${dia}/${fechaMes}`;
@@ -183,7 +191,7 @@ function App() {
             placeholder="Seleccione una fecha"
             value={fechaSeleccionada}
             onChange={(e) => setFechaSeleccionada(e.target.value)}
-            style={{ borderRadius: "8px", padding: "0.6em 1.2em" }}
+            //style={{ borderRadius: "8px", padding: "0.6em 1.2em" }}
           />
 
           <select
@@ -200,7 +208,10 @@ function App() {
         </>
       )}
 
-      <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
+      {/* <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button> */}
+      <button disabled={!fechaSeleccionada || !empresaSeleccionada}>
+        Ver trabajadores
+      </button>
       {loading && <p>Cargando empresas...</p>}
 
       {mostrar && modo === "dia" && (
