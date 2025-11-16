@@ -123,11 +123,6 @@ function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
         {dias.map((dia) => {
           const presentes = lista.filter((t) => t.fecha === dia);
 
-          console.log(`📆 Día: ${dia} → ${presentes.length} trabajador(es)`);
-          presentes.forEach((t, i) => {
-            console.log(`   ${i + 1}. ${t.nombre} — ${t.fecha}`);
-          });
-
           return (
             <div key={dia} style={{ border: "1px solid #ccc", padding: "6px" }}>
               <strong>{dia}</strong>
@@ -209,7 +204,10 @@ function App() {
       )}
 
       {/* <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button> */}
-      <button disabled={!fechaSeleccionada || !empresaSeleccionada}>
+      <button
+        disabled={!fechaSeleccionada || !empresaSeleccionada}
+        onClick={() => setMostrar(!mostrar)}
+      >
         Ver trabajadores
       </button>
       {loading && <p>Cargando empresas...</p>}
