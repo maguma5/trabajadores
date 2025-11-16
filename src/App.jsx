@@ -186,12 +186,13 @@ function App() {
             placeholder="Seleccione una fecha"
             value={fechaSeleccionada}
             onChange={(e) => setFechaSeleccionada(e.target.value)}
-            //style={{ borderRadius: "8px", padding: "0.6em 1.2em" }}
+            className="selector-fecha"
           />
 
           <select
             value={empresaSeleccionada}
             onChange={(e) => setEmpresaSeleccionada(e.target.value)}
+            className="selector-fecha"
           >
             <option value="">Selecciona una empresa</option>
             {empresasUnicas.map((e, i) => (
