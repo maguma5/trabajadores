@@ -25,7 +25,7 @@ function obtenerDiasDelMes(fechaMes) {
 
   for (let i = 1; i <= totalDias; i++) {
     const dia = i.toString().padStart(2, "0");
-    dias.push(`${dia}-${mes}-${año}`); // formato dd-MM-yyyy
+    dias.push(`${dia}/${mes}/${año}`); // formato dd-MM-yyyy
   }
 
   return dias;
