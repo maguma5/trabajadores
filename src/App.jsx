@@ -4,6 +4,9 @@ import Logo from "./assets/iconosegura.jpg";
 import "./App.css";
 import { useTrabajadores } from "./libs/hooks/useTrabajadores";
 
+const [empresaSeleccionada, setEmpresaSeleccionada] = useState("");
+const empresasUnicas = [...new Set(trabajadores.map((t) => t.empresa))];
+
 function agruparPorEmpresa(trabajadores) {
   const grupos = {};
 
@@ -16,6 +19,65 @@ function agruparPorEmpresa(trabajadores) {
   });
 
   return grupos;
+}
+
+function obtenerDiasDelMes(fechaMes) {
+  const [año, mes] = fechaMes.split("-");
+  const dias = [];
+  const totalDias = new Date(año, mes, 0).getDate(); // último día del mes
+
+  for (let i = 1; i <= totalDias; i++) {
+    const dia = i.toString().padStart(2, "0");
+    dias.push(`${dia}-${mes}-${año}`); // formato dd-MM-yyyy
+  }
+
+  return dias;
+}
+
+function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
+  const mesSeleccionado = convertirMes(fechaMes); // MM-yyyy
+  return trabajadores.filter(
+    (t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
+  );
+}
+
+function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
+  const dias = obtenerDiasDelMes(fechaMes);
+  const lista = filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes);
+
+  return (
+    <div>
+      <h2>
+        {empresa} — {fechaMes}
+      </h2>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: "8px",
+        }}
+      >
+        {dias.map((dia) => {
+          const presentes = lista.filter((t) => t.fecha === dia);
+          return (
+            <div key={dia} style={{ border: "1px solid #ccc", padding: "6px" }}>
+              <strong>{dia}</strong>
+              {presentes.length > 0 ? (
+                presentes.map((t, i) => <p key={i}>{t.nombre}</p>)
+              ) : (
+                <p style={{ color: "#aaa" }}>—</p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function convertirMes(fechaMes) {
+  const [año, mes] = fechaMes.split("-");
+  return `${mes}-${año}`;
 }
 
 function App() {
@@ -43,17 +105,35 @@ function App() {
       )}
 
       {modo === "mes" && (
-        <input
-          type="month"
-          value={fechaSeleccionada}
-          onChange={(e) => setFechaSeleccionada(e.target.value)}
-        />
+        <>
+          <input
+            type="month"
+            value={fechaSeleccionada}
+            onChange={(e) => setFechaSeleccionada(e.target.value)}
+          />
+
+          <select
+            value={empresaSeleccionada}
+            onChange={(e) => setEmpresaSeleccionada(e.target.value)}
+          >
+            <option value="">Selecciona una empresa</option>
+            {empresasUnicas.map((e, i) => (
+              <option key={i} value={e}>
+                {e}
+              </option>
+            ))}
+          </select>
+        </>
       )}
       <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
       {loading && <p>Cargando...</p>}
 
       {mostrar && modo === "dia" && (
         <div>
+          <h2>
+            Total: {trabajadores.length} trabajador
+            {trabajadores.length !== 1 ? "es" : ""}
+          </h2>
           {Object.entries(trabajadoresPorEmpresa).map(([empresa, lista]) => (
             <div key={empresa}>
               <h3>
@@ -67,6 +147,15 @@ function App() {
           ))}
         </div>
       )}
+
+      {empresaSeleccionada && fechaSeleccionada && (
+        <CuadriculaMes
+          trabajadores={trabajadores}
+          empresa={empresaSeleccionada}
+          fechaMes={fechaSeleccionada}
+        />
+      )}
+
       {/* {mostrar && (
         <div>
           {trabajadores.length > 0 ? (
