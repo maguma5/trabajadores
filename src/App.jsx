@@ -18,77 +18,79 @@ function agruparPorEmpresa(trabajadores) {
   return grupos;
 }
 
-function obtenerDiasDelMes(fechaMes) {
-  const [mes, año] = fechaMes.split("/");
-  const dias = [];
-  const totalDias = new Date(año, mes, 0).getDate(); // último día del mes
-
-  for (let i = 1; i <= totalDias; i++) {
-    const dia = i.toString().padStart(2, "0");
-    dias.push(`${dia}/${mes}/${año}`); // formato dd-MM-yyyy
-  }
-
-  return dias;
-}
-
-function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
-  console.log("🔍 Filtrando trabajadores...");
-  console.log("Empresa seleccionada:", empresa);
-  console.log("Mes seleccionado (formato yyyy-MM):", fechaMes);
-  console.log("Total trabajadores recibidos:", trabajadores.length);
-
-  const filtrados = trabajadores.filter(
-    (t) => t.empresa === empresa && t.fecha?.includes(fechaMes)
-  );
-
-  console.log("Total trabajadores filtrados:", filtrados.length);
-
-  return filtrados;
-}
-
-function obtenerDiasDelMes(fechaMes) {
-  const [año, mes] = fechaMes.split("-");
-  const totalDias = new Date(año, mes, 0).getDate();
-  const dias = [];
-
-  for (let i = 1; i <= totalDias; i++) {
-    dias.push(i.toString().padStart(2, "0")); // "01", "02", ...
-  }
-
-  return dias;
-}
-
-function convertirMes(fechaMes) {
-  const [año, mes] = fechaMes.split("-");
-  return `${mes}-${año}`; // MM-yyyy
-}
-
-function construirMatriz(trabajadores, empresa, fechaMes) {
-  const dias = obtenerDiasDelMes(fechaMes);
-  const mesSeleccionado = convertirMes(fechaMes); // "MM-yyyy"
-
-  const trabajadoresEmpresa = trabajadores.filter(
-    (t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
-  );
-
-  const nombresUnicos = [...new Set(trabajadoresEmpresa.map((t) => t.nombre))];
-
-  const matriz = nombresUnicos.map((nombre) => {
-    const fila = { nombre };
-    dias.forEach((dia) => {
-      const fechaCompleta = `${dia}-${mesSeleccionado}`;
-      const presente = trabajadoresEmpresa.some(
-        (t) => t.nombre === nombre && t.fecha === fechaCompleta
-      );
-      fila[fechaCompleta] = presente ? "✅" : "";
-    });
-    return fila;
-  });
-
-  return { dias, matriz };
-}
-
 function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
+  // ✅ Estas funciones van aquí, fuera del JSX
+  function obtenerDiasDelMes(fechaMes) {
+    const [mes, año] = fechaMes.split("-");
+    const totalDias = new Date(año, mes, 0).getDate();
+    const dias = [];
+    for (let i = 1; i <= totalDias; i++) {
+      dias.push(i.toString().padStart(2, "0"));
+    }
+    return dias;
+  }
+
+  /*  function convertirMes(fechaMes) {
+    const [año, mes] = fechaMes.split("-");
+    return `${mes}-${año}`;
+  } */
+
+  function construirMatriz(trabajadores, empresa, fechaMes) {
+    const dias = obtenerDiasDelMes(fechaMes);
+    //const mesSeleccionado = convertirMes(fechaMes);
+    const mesSeleccionado = fechaMes;
+    const trabajadoresEmpresa = trabajadores.filter(
+      (t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
+    );
+    const nombresUnicos = [
+      ...new Set(trabajadoresEmpresa.map((t) => t.nombre)),
+    ];
+    const matriz = nombresUnicos.map((nombre) => {
+      const fila = { nombre };
+      dias.forEach((dia) => {
+        const fechaCompleta = `${dia}-${mesSeleccionado}`;
+        const presente = trabajadoresEmpresa.some(
+          (t) => t.nombre === nombre && t.fecha === fechaCompleta
+        );
+        fila[fechaCompleta] = presente ? "✅" : "";
+      });
+      return fila;
+    });
+    return { dias, matriz };
+  }
+
+  // ✅ Aquí ya puedes usar la matriz
+  const { dias, matriz } = construirMatriz(trabajadores, empresa, fechaMes);
+
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table border="1" cellPadding="6" style={{ borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th>Trabajador</th>
+            {dias.map((dia) => (
+              <th key={dia}>{dia}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {matriz.map((fila, i) => (
+            <tr key={i}>
+              <td>{fila.nombre}</td>
+              {dias.map((dia) => {
+                //const fecha = `${dia}-${convertirMes(fechaMes)}`;
+                const fecha = `${dia}-${fechaMes}`;
+                return <td key={dia}>{fila[fecha]}</td>;
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
   const dias = obtenerDiasDelMes(fechaMes);
   const lista = filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes);
 
