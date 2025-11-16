@@ -33,6 +33,7 @@ function obtenerDiasDelMes(fechaMes) {
 
 function filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes) {
   //const mesSeleccionado = convertirMes(fechaMes); // MM-yyyy
+  console.log("cantidad de trabajadores a filtrar:", trabajadores.length);
   return trabajadores.filter(
     //console.log("empresa :", empresa, " y mesSeleccionado :", mesSeleccionado),
     //(t) => t.empresa === empresa && t.fecha?.includes(mesSeleccionado)
@@ -129,7 +130,7 @@ function App() {
         </>
       )}
       <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button>
-      {loading && <p>Cargando...</p>}
+      {loading && <p>Cargando empresas...</p>}
 
       {mostrar && modo === "dia" && (
         <div>
