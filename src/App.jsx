@@ -171,9 +171,13 @@ function App() {
       <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
       {modo === "dia" && (
         <input
-          type="date"
+          type={inputFocus ? "date" : "text"}
+          onFocus={() => setInputFocus(true)}
+          onBlur={() => setInputFocus(false)}
+          placeholder="Seleccione una fecha"
           value={fechaSeleccionada}
           onChange={(e) => setFechaSeleccionada(e.target.value)}
+          className="selector-fecha"
         />
       )}
 
