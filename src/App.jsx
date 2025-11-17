@@ -19,12 +19,11 @@ function agruparPorEmpresa(trabajadores) {
 }
 
 function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
-  // ✅ Estas funciones van aquí, fuera del JSX
   function normalizarMes(fechaMes) {
     const [mes, año] = fechaMes.split("/");
     return `${mes.padStart(2, "0")}-${año}`; // "11-2025"
   }
-  console.log("Trabajadores en CuadriculaMes:", trabajadores);
+
   function obtenerDiasDelMes(fechaMes) {
     const [mes, año] = fechaMes.split("/");
     const totalDias = new Date(parseInt(año), parseInt(mes), 0).getDate();
@@ -37,7 +36,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
 
   function construirMatriz(trabajadores, empresa, fechaMes) {
     const dias = obtenerDiasDelMes(fechaMes);
-    const mesSeleccionado = fechaMes; // "11-2025"
+    const mesSeleccionado = fechaMes;
 
     const trabajadoresEmpresa = trabajadores.filter(
       (t) => t.empresa === empresa && t.fecha?.includes(fechaMes)
@@ -46,28 +45,55 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
     const nombresUnicos = [
       ...new Set(trabajadoresEmpresa.map((t) => t.nombre)),
     ];
-    console.log(
-      "📋 Trabajadores de la empresa en el mes:",
-      trabajadoresEmpresa
-    );
-    console.log("👤 Nombres únicos:", nombresUnicos);
+
+    const mapaIncidencias = {
+      "Asistencia normal": "✅",
+      "Ausente sin justificación": "❌",
+      "Ausente con justificación": "📄",
+      "Ausente con motivo medico con justificante": "🏥",
+      "Ausente con motivo medico sin justificante": "💉",
+      "Ausente por Curso y revision medica": "🩺",
+      "Ausente por Problema mecánico": "🚗",
+      "Asunto propio": "📆",
+      "Sin documentación": "⚠️",
+    };
+
+    const leyenda = {};
+    let contador = Object.keys(mapaIncidencias).length + 1;
+
+    trabajadoresEmpresa.forEach((t) => {
+      const inc = t.incidencia?.trim();
+      if (!inc) return;
+
+      if (mapaIncidencias[inc]) {
+        leyenda[inc] = mapaIncidencias[inc];
+      } else if (!leyenda[inc]) {
+        leyenda[inc] = String(contador++);
+      }
+    });
+
     const matriz = nombresUnicos.map((nombre) => {
       const fila = { nombre };
       dias.forEach((dia) => {
-        const fechaCompleta = `${dia}/${mesSeleccionado}`; // "dd-MM-yyyy"
+        const fechaCompleta = `${dia}/${mesSeleccionado}`;
+        const incidencia = trabajadoresEmpresa.find(
+          (x) => x.nombre === nombre && x.fecha === fechaCompleta
+        )?.incidencia;
 
-        const presente = trabajadoresEmpresa.some(
-          (t) => t.nombre === nombre && t.fecha === fechaCompleta
-        );
-        fila[fechaCompleta] = presente ? "✅" : "";
+        fila[fechaCompleta] = incidencia ? leyenda[incidencia] : "";
       });
       return fila;
     });
-    return { dias, matriz };
+
+    return { dias, matriz, leyenda };
   }
 
-  // ✅ Aquí ya puedes usar la matriz
-  const { dias, matriz } = construirMatriz(trabajadores, empresa, fechaMes);
+  const { dias, matriz, leyenda } = construirMatriz(
+    trabajadores,
+    empresa,
+    fechaMes
+  );
+
   return (
     <div style={{ overflowX: "auto" }}>
       <table
@@ -92,7 +118,6 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
             <tr key={i}>
               <td style={{ whiteSpace: "nowrap" }}>{fila.nombre}</td>
               {dias.map((dia) => {
-                //const fecha = `${dia}-${normalizarMes(fechaMes)}`;
                 const fecha = `${dia}/${fechaMes}`;
                 return <td key={dia}>{fila[fecha]}</td>;
               })}
@@ -100,6 +125,19 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
           ))}
         </tbody>
       </table>
+
+      {Object.keys(leyenda).length > 0 && (
+        <div style={{ marginTop: "1em" }}>
+          <h4>Leyenda de incidencias</h4>
+          <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+            {Object.entries(leyenda).map(([desc, num]) => (
+              <li key={num}>
+                <strong>{num}</strong> → {desc}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
