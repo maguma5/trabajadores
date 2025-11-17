@@ -204,14 +204,12 @@ function App() {
             value={fechaSeleccionada}
             onChange={(e) => setFechaSeleccionada(e.target.value)}
             className="selector-fecha"
-            style={{ color: fechaSeleccionada ? "white" : "#ffcc00" }}
           />
 
           <select
             value={empresaSeleccionada}
             onChange={(e) => setEmpresaSeleccionada(e.target.value)}
             className="selector-fecha"
-            //style={{ color: fechaSeleccionada ? "white" : "#ffcc00" }}
           >
             <option value="">Selecciona una empresa</option>
             {empresasUnicas.map((e, i) => (
