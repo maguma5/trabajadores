@@ -59,7 +59,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
     };
 
     const leyenda = {};
-    let contador = Object.keys(mapaIncidencias).length + 1;
+    let contador = 1;
 
     trabajadoresEmpresa.forEach((t) => {
       const inc = t.incidencia?.trim();
@@ -130,9 +130,9 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
         <div style={{ marginTop: "1em" }}>
           <h4>Leyenda de incidencias</h4>
           <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-            {Object.entries(leyenda).map(([desc, num]) => (
-              <li key={num}>
-                <strong>{num}</strong> → {desc}
+            {Object.entries(leyenda).map(([desc, simbolo]) => (
+              <li key={simbolo}>
+                <strong>{simbolo}</strong> → {desc}
               </li>
             ))}
           </ul>
