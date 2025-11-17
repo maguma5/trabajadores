@@ -197,8 +197,9 @@ function App() {
           onChange={(e) => setFechaSeleccionada(e.target.value)}
           className="selector-fecha"
           style={{
-            color: !fechaSeleccionada ? "#ffcc00" : "white",
+            color: !fechaSeleccionada ? "white" : "white",
             fontStyle: !fechaSeleccionada ? "italic" : "normal",
+            fontSize: !fechaSeleccionada ? "1.5em" : "1em",
           }}
         />
       )}
@@ -219,8 +220,9 @@ function App() {
             onChange={(e) => setFechaSeleccionada(e.target.value)}
             className="selector-fecha"
             style={{
-              color: !fechaSeleccionada ? "#ffcc00" : "white",
+              color: !fechaSeleccionada ? "white" : "white",
               fontStyle: !fechaSeleccionada ? "italic" : "normal",
+              fontSize: !fechaSeleccionada ? "1.5em" : "1em",
             }}
           />
 
