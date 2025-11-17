@@ -175,21 +175,24 @@ function App() {
       <h1>Control de Presencia</h1>
       <button onClick={() => setModo("dia")}>Ver trabajadores de un dia</button>
       <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
-      <input
-        type={inputFocus ? "date" : "text"}
-        onFocus={() => setInputFocus(true)}
-        onBlur={() => setInputFocus(false)}
-        placeholder="Seleccione una fecha"
-        value={
-          inputFocus ? fechaSeleccionada : formatearFecha(fechaSeleccionada)
-        }
-        onChange={(e) => setFechaSeleccionada(e.target.value)}
-        className="selector-fecha"
-        style={{
-          color: !fechaSeleccionada ? "#ffcc00" : "white",
-          fontStyle: !fechaSeleccionada ? "italic" : "normal",
-        }}
-      />
+
+      {modo === "dia" && (
+        <input
+          type={inputFocus ? "date" : "text"}
+          onFocus={() => setInputFocus(true)}
+          onBlur={() => setInputFocus(false)}
+          placeholder="Seleccione una fecha"
+          value={
+            inputFocus ? fechaSeleccionada : formatearFecha(fechaSeleccionada)
+          }
+          onChange={(e) => setFechaSeleccionada(e.target.value)}
+          className="selector-fecha"
+          style={{
+            color: !fechaSeleccionada ? "#ffcc00" : "white",
+            fontStyle: !fechaSeleccionada ? "italic" : "normal",
+          }}
+        />
+      )}
 
       {modo === "mes" && (
         <>
@@ -201,12 +204,14 @@ function App() {
             value={fechaSeleccionada}
             onChange={(e) => setFechaSeleccionada(e.target.value)}
             className="selector-fecha"
+            style={{ color: fechaSeleccionada ? "white" : "#ffcc00" }}
           />
 
           <select
             value={empresaSeleccionada}
             onChange={(e) => setEmpresaSeleccionada(e.target.value)}
             className="selector-fecha"
+            //style={{ color: fechaSeleccionada ? "white" : "#ffcc00" }}
           >
             <option value="">Selecciona una empresa</option>
             {empresasUnicas.map((e, i) => (
