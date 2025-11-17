@@ -77,7 +77,8 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       dias.forEach((dia) => {
         const fechaCompleta = `${dia}/${mesSeleccionado}`;
         const incidencia = trabajadoresEmpresa.find(
-          (x) => x.nombre === nombre && x.fecha === fechaCompleta
+          (x) =>
+            x.nombre === nombre && x.fecha === fechaCompleta && x.incidencia
         )?.incidencia;
 
         fila[fechaCompleta] = incidencia ? leyenda[incidencia] : "";
@@ -95,11 +96,12 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
   );
 
   return (
-    <div style={{ overflowX: "auto" }}>
+    <div style={{ overflowX: "auto", maxWidth: "100%" }}>
       <table
         border="1"
         cellPadding="6"
         style={{
+          minWidth: "max-content",
           tableLayout: "auto",
           width: "auto",
           borderCollapse: "collapse",
