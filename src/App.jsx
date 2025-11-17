@@ -154,6 +154,12 @@ function formatearFecha(fechaISO) {
   return new Date(fechaISO).toLocaleDateString("es-ES", opciones);
 }
 
+function formatearMes(fechaISO) {
+  if (!fechaISO) return "";
+  const opciones = { month: "long", year: "numeric" };
+  return new Date(fechaISO).toLocaleDateString("es-ES", opciones);
+}
+
 function App() {
   const [mostrar, setMostrar] = useState(false);
   const [modo, setModo] = useState(""); // "dia" o "mes"
@@ -181,9 +187,12 @@ function App() {
           type={inputFocus ? "date" : "text"}
           onFocus={() => setInputFocus(true)}
           onBlur={() => setInputFocus(false)}
-          placeholder="Seleccione un día"
           value={
-            inputFocus ? fechaSeleccionada : formatearFecha(fechaSeleccionada)
+            inputFocus
+              ? fechaSeleccionada
+              : fechaSeleccionada
+              ? formatearFecha(fechaSeleccionada)
+              : "Seleccione un día"
           }
           onChange={(e) => setFechaSeleccionada(e.target.value)}
           className="selector-fecha"
@@ -200,10 +209,19 @@ function App() {
             type={inputFocus ? "month" : "text"}
             onFocus={() => setInputFocus(true)}
             onBlur={() => setInputFocus(false)}
-            placeholder="Seleccione un mes"
-            value={fechaSeleccionada}
+            value={
+              inputFocus
+                ? fechaSeleccionada
+                : fechaSeleccionada
+                ? formatearMes(fechaSeleccionada)
+                : "Seleccione un mes"
+            }
             onChange={(e) => setFechaSeleccionada(e.target.value)}
             className="selector-fecha"
+            style={{
+              color: !fechaSeleccionada ? "#ffcc00" : "white",
+              fontStyle: !fechaSeleccionada ? "italic" : "normal",
+            }}
           />
 
           <select
