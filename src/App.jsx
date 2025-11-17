@@ -148,6 +148,12 @@ function convertirMes(fechaMes) {
   return `${mes}/${año}`;
 }
 
+function formatearFecha(fechaISO) {
+  if (!fechaISO) return "";
+  const opciones = { day: "numeric", month: "long", year: "numeric" };
+  return new Date(fechaISO).toLocaleDateString("es-ES", opciones);
+}
+
 function App() {
   const [mostrar, setMostrar] = useState(false);
   const [modo, setModo] = useState(""); // "dia" o "mes"
@@ -169,18 +175,21 @@ function App() {
       <h1>Control de Presencia</h1>
       <button onClick={() => setModo("dia")}>Ver trabajadores de un dia</button>
       <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
-      {modo === "dia" && (
-        <input
-          type={inputFocus ? "date" : "text"}
-          onFocus={() => setInputFocus(true)}
-          onBlur={() => setInputFocus(false)}
-          placeholder="Seleccione una fecha"
-          value={fechaSeleccionada}
-          onChange={(e) => setFechaSeleccionada(e.target.value)}
-          className="selector-fecha"
-          style={{ color: fechaSeleccionada ? "white" : "#ffcc00" }}
-        />
-      )}
+      <input
+        type={inputFocus ? "date" : "text"}
+        onFocus={() => setInputFocus(true)}
+        onBlur={() => setInputFocus(false)}
+        placeholder="Seleccione una fecha"
+        value={
+          inputFocus ? fechaSeleccionada : formatearFecha(fechaSeleccionada)
+        }
+        onChange={(e) => setFechaSeleccionada(e.target.value)}
+        className="selector-fecha"
+        style={{
+          color: !fechaSeleccionada ? "#ffcc00" : "white",
+          fontStyle: !fechaSeleccionada ? "italic" : "normal",
+        }}
+      />
 
       {modo === "mes" && (
         <>
@@ -192,14 +201,12 @@ function App() {
             value={fechaSeleccionada}
             onChange={(e) => setFechaSeleccionada(e.target.value)}
             className="selector-fecha"
-            style={{ color: fechaSeleccionada ? "white" : "#ffcc00" }}
           />
 
           <select
             value={empresaSeleccionada}
             onChange={(e) => setEmpresaSeleccionada(e.target.value)}
             className="selector-fecha"
-            style={{ color: fechaSeleccionada ? "white" : "#ffcc00" }}
           >
             <option value="">Selecciona una empresa</option>
             {empresasUnicas.map((e, i) => (
