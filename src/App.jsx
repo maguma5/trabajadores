@@ -181,7 +181,7 @@ function App() {
           type={inputFocus ? "date" : "text"}
           onFocus={() => setInputFocus(true)}
           onBlur={() => setInputFocus(false)}
-          placeholder="Seleccione una fecha"
+          placeholder="Seleccione un día"
           value={
             inputFocus ? fechaSeleccionada : formatearFecha(fechaSeleccionada)
           }
@@ -200,7 +200,7 @@ function App() {
             type={inputFocus ? "month" : "text"}
             onFocus={() => setInputFocus(true)}
             onBlur={() => setInputFocus(false)}
-            placeholder="Seleccione una fecha"
+            placeholder="Seleccione un mes"
             value={fechaSeleccionada}
             onChange={(e) => setFechaSeleccionada(e.target.value)}
             className="selector-fecha"
