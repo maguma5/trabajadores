@@ -206,7 +206,7 @@ function App() {
 
       {/* <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button> */}
       <button
-        disabled={!fechaSeleccionada || !empresaSeleccionada}
+        disabled={!fechaSeleccionada && !empresaSeleccionada}
         onClick={() => setMostrar(!mostrar)}
       >
         Ver trabajadores
