@@ -63,6 +63,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
 
     trabajadoresEmpresa.forEach((t) => {
       const inc = t.incidencia?.trim();
+
       if (!inc) return;
 
       if (mapaIncidencias[inc]) {
@@ -76,10 +77,18 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       const fila = { nombre };
       dias.forEach((dia) => {
         const fechaCompleta = `${dia}/${mesSeleccionado}`;
-        const incidencia = trabajadoresEmpresa.find(
-          (x) =>
-            x.nombre === nombre && x.fecha === fechaCompleta && x.incidencia
-        )?.incidencia;
+        const registro = trabajadoresEmpresa.find(
+          (x) => x.nombre === nombre && x.fecha === fechaCompleta
+        );
+
+        let incidencia;
+        if (registro) {
+          incidencia =
+            typeof registro.incidencia === "string" &&
+            registro.incidencia.trim()
+              ? registro.incidencia.trim()
+              : "Asistencia normal";
+        }
 
         fila[fechaCompleta] = incidencia ? leyenda[incidencia] : "";
       });
@@ -140,45 +149,6 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
           </ul>
         </div>
       )}
-    </div>
-  );
-}
-
-function CuadriculaMes1({ trabajadores, empresa, fechaMes }) {
-  const dias = obtenerDiasDelMes(fechaMes);
-  const lista = filtrarPorEmpresaYMes(trabajadores, empresa, fechaMes);
-
-  return (
-    <div>
-      <h2>
-        {empresa} — {fechaMes}
-      </h2>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(7, 1fr)",
-          gap: "8px",
-        }}
-      >
-        {dias.map((dia) => {
-          const presentes = lista.filter((t) => t.fecha === dia);
-
-          return (
-            <div key={dia} style={{ border: "1px solid #ccc", padding: "6px" }}>
-              <strong>{dia}</strong>
-              {presentes.length > 0 ? (
-                presentes.map((t, i) => (
-                  <p key={i}>
-                    {t.nombre} ({t.fecha})
-                  </p>
-                ))
-              ) : (
-                <p style={{ color: "#aaa" }}>—</p>
-              )}
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 }
@@ -281,7 +251,6 @@ function App() {
         </>
       )}
 
-      {/* <button onClick={() => setMostrar(!mostrar)}>Ver Trabajadores</button> */}
       <button
         disabled={!fechaSeleccionada && !empresaSeleccionada}
         onClick={() => setMostrar(!mostrar)}
