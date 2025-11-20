@@ -195,7 +195,13 @@ function App() {
       {modo === "dia" && (
         <input
           type={inputFocus ? "date" : "text"}
-          onFocus={() => setInputFocus(true)}
+          onFocus={() => {
+            setInputFocus(true);
+            if (!fechaSeleccionada) {
+              const hoy = new Date().toISOString().split("T")[0];
+              setFechaSeleccionada(hoy);
+            }
+          }}
           onBlur={() => setInputFocus(false)}
           value={
             inputFocus
@@ -218,7 +224,14 @@ function App() {
         <>
           <input
             type={inputFocus ? "month" : "text"}
-            onFocus={() => setInputFocus(true)}
+            onFocus={() => {
+              setInputFocus(true);
+              if (!fechaSeleccionada) {
+                const hoy = new Date();
+                const mesActual = hoy.toISOString().slice(0, 7);
+                setFechaSeleccionada(mesActual);
+              }
+            }}
             onBlur={() => setInputFocus(false)}
             value={
               inputFocus
