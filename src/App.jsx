@@ -321,23 +321,15 @@ function App() {
       )}
 
       {modo === "dia" && (
-        <>
-          <select
-            value={empresaSeleccionada}
-            onChange={(e) => {
-              setEmpresaSeleccionada(e.target.value);
-              setErrorMensaje("");
-            }}
-            className="selector-fecha"
-          >
-            <option value="">Todas las empresas</option>
-            {empresasUnicas.map((e, i) => (
-              <option key={i} value={e}>
-                {e}
-              </option>
-            ))}
-          </select>
-
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            flexWrap: "wrap",
+            marginBottom: "1rem",
+          }}
+        >
           <input
             type={inputFocus ? "date" : "text"}
             onFocus={() => {
@@ -364,13 +356,43 @@ function App() {
               color: !fechaSeleccionada ? "white" : "white",
               fontStyle: !fechaSeleccionada ? "italic" : "normal",
               fontSize: !fechaSeleccionada ? "1.5em" : "1em",
+              flex: "1 1 240px",
+              maxWidth: "300px",
             }}
           />
-        </>
+
+          <select
+            value={empresaSeleccionada}
+            onChange={(e) => {
+              setEmpresaSeleccionada(e.target.value);
+              setErrorMensaje("");
+            }}
+            className="selector-fecha"
+            style={{
+              flex: "1 1 240px",
+              maxWidth: "300px",
+            }}
+          >
+            <option value="">Todas las empresas</option>
+            {empresasUnicas.map((e, i) => (
+              <option key={i} value={e}>
+                {e}
+              </option>
+            ))}
+          </select>
+        </div>
       )}
 
       {modo === "mes" && (
-        <>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            flexWrap: "wrap",
+            marginBottom: "1rem",
+          }}
+        >
           <input
             type={inputFocus ? "month" : "text"}
             onFocus={() => {
@@ -401,6 +423,8 @@ function App() {
               color: !fechaSeleccionada ? "white" : "white",
               fontStyle: !fechaSeleccionada ? "italic" : "normal",
               fontSize: !fechaSeleccionada ? "1.5em" : "1em",
+              flex: "1 1 240px",
+              maxWidth: "300px",
             }}
           />
 
@@ -414,6 +438,10 @@ function App() {
               }
             }}
             className="selector-fecha"
+            style={{
+              flex: "1 1 240px",
+              maxWidth: "300px",
+            }}
           >
             <option value="">Selecciona una empresa</option>
             {empresasUnicas.map((e, i) => (
@@ -422,7 +450,7 @@ function App() {
               </option>
             ))}
           </select>
-        </>
+        </div>
       )}
 
       <button onClick={handleVerTrabajadores}>Ver trabajadores</button>
