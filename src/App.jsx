@@ -188,6 +188,14 @@ function App() {
   const empresasUnicas = trabajadores
     ? [...new Set(trabajadores.map((t) => t.empresa || "Sin empresa"))]
     : [];
+  const empresasMostradas =
+    modo === "dia" && empresaSeleccionada
+      ? {
+          [empresaSeleccionada]: trabajadores.filter(
+            (t) => (t.empresa || "Sin empresa") === empresaSeleccionada,
+          ),
+        }
+      : trabajadoresPorEmpresa;
   const trabajadoresEmpresaSeleccionada =
     empresaSeleccionada && trabajadores
       ? [...trabajadores]
@@ -235,6 +243,7 @@ function App() {
       <button
         onClick={() => {
           setModo("dia");
+          setEmpresaSeleccionada("");
           setMostrar(false);
           setErrorMensaje("");
         }}
@@ -244,6 +253,7 @@ function App() {
       <button
         onClick={() => {
           setModo("mes");
+          setEmpresaSeleccionada("");
           setMostrar(false);
           setErrorMensaje("");
         }}
@@ -269,34 +279,52 @@ function App() {
       )}
 
       {modo === "dia" && (
-        <input
-          type={inputFocus ? "date" : "text"}
-          onFocus={() => {
-            setInputFocus(true);
-            if (!fechaSeleccionada) {
-              const hoy = new Date().toISOString().split("T")[0];
-              setFechaSeleccionada(hoy);
+        <>
+          <select
+            value={empresaSeleccionada}
+            onChange={(e) => {
+              setEmpresaSeleccionada(e.target.value);
+              setErrorMensaje("");
+            }}
+            className="selector-fecha"
+          >
+            <option value="">Todas las empresas</option>
+            {empresasUnicas.map((e, i) => (
+              <option key={i} value={e}>
+                {e}
+              </option>
+            ))}
+          </select>
+
+          <input
+            type={inputFocus ? "date" : "text"}
+            onFocus={() => {
+              setInputFocus(true);
+              if (!fechaSeleccionada) {
+                const hoy = new Date().toISOString().split("T")[0];
+                setFechaSeleccionada(hoy);
+              }
+            }}
+            onBlur={() => setInputFocus(false)}
+            value={
+              inputFocus
+                ? fechaSeleccionada
+                : fechaSeleccionada
+                  ? formatearFecha(fechaSeleccionada)
+                  : "Seleccione un día"
             }
-          }}
-          onBlur={() => setInputFocus(false)}
-          value={
-            inputFocus
-              ? fechaSeleccionada
-              : fechaSeleccionada
-                ? formatearFecha(fechaSeleccionada)
-                : "Seleccione un día"
-          }
-          onChange={(e) => {
-            setFechaSeleccionada(e.target.value);
-            setErrorMensaje("");
-          }}
-          className="selector-fecha"
-          style={{
-            color: !fechaSeleccionada ? "white" : "white",
-            fontStyle: !fechaSeleccionada ? "italic" : "normal",
-            fontSize: !fechaSeleccionada ? "1.5em" : "1em",
-          }}
-        />
+            onChange={(e) => {
+              setFechaSeleccionada(e.target.value);
+              setErrorMensaje("");
+            }}
+            className="selector-fecha"
+            style={{
+              color: !fechaSeleccionada ? "white" : "white",
+              fontStyle: !fechaSeleccionada ? "italic" : "normal",
+              fontSize: !fechaSeleccionada ? "1.5em" : "1em",
+            }}
+          />
+        </>
       )}
 
       {modo === "mes" && (
@@ -364,7 +392,7 @@ function App() {
             Total: {trabajadores.length} trabajador
             {trabajadores.length !== 1 ? "es" : ""}
           </h2>
-          {Object.entries(trabajadoresPorEmpresa).map(([empresa, lista]) => (
+          {Object.entries(empresasMostradas).map(([empresa, lista]) => (
             <div key={empresa}>
               <h3>
                 {empresa} — {lista.length} trabajador
