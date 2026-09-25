@@ -476,10 +476,10 @@ function App() {
                   width: "100%",
                   maxWidth: "600px",
                   background: "#fff",
-                  border: "1px solid #dfe7f1",
+                  border: "1px solid #b8c5d6",
                   borderRadius: "10px",
                   overflow: "hidden",
-                  boxShadow: "0 2px 8px rgba(13, 59, 102, 0.08)",
+                  boxShadow: "0 2px 10px rgba(13, 59, 102, 0.12)",
                 }}
               >
                 <thead>
@@ -509,8 +509,8 @@ function App() {
                     <tr
                       key={index}
                       style={{
-                        background: index % 2 === 0 ? "#f7f9fc" : "#ffffff",
-                        borderBottom: "1px solid #edf1f5",
+                        background: index % 2 === 0 ? "#f3f7fb" : "#ffffff",
+                        borderBottom: "1px solid #c8d3e1",
                       }}
                     >
                       <td style={{ padding: "10px 14px", color: "#1f2937" }}>
