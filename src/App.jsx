@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import html2canvas from "html2canvas";
 import Logo from "./assets/iconosegura.jpg";
 
 import "./App.css";
@@ -181,6 +182,7 @@ function App() {
   const { trabajadores, loading } = useTrabajadores(modo, fechaSeleccionada);
   const [inputFocus, setInputFocus] = useState(false);
   const [errorMensaje, setErrorMensaje] = useState("");
+  const mesGridRef = useRef(null);
 
   const trabajadoresPorEmpresa =
     modo === "dia" ? agruparPorEmpresa(trabajadores) : {};
@@ -235,6 +237,30 @@ function App() {
 
     setErrorMensaje("");
     setMostrar((prev) => !prev);
+  };
+
+  const handleDescargarJpg = async () => {
+    if (!mesGridRef.current) {
+      setErrorMensaje("No hay ninguna cuadrícula disponible para descargar.");
+      return;
+    }
+
+    try {
+      const canvas = await html2canvas(mesGridRef.current, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+      });
+
+      const nombreArchivo = `cuadrilla-${empresaSeleccionada || "empresa"}-${fechaSeleccionada || "mes"}.jpg`;
+      const enlace = document.createElement("a");
+      enlace.download = nombreArchivo;
+      enlace.href = canvas.toDataURL("image/jpeg", 0.95);
+      enlace.click();
+      setErrorMensaje("");
+    } catch (error) {
+      console.error("Error al generar la imagen JPG:", error);
+      setErrorMensaje("No se pudo generar la imagen JPG.");
+    }
   };
 
   return (
@@ -533,11 +559,38 @@ function App() {
         empresaSeleccionada &&
         fechaSeleccionada &&
         trabajadores.length > 0 && (
-          <CuadriculaMes
-            trabajadores={trabajadores}
-            empresa={empresaSeleccionada}
-            fechaMes={convertirMes(fechaSeleccionada)}
-          />
+          <div>
+            <div
+              style={{
+                marginBottom: "0.75rem",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <button
+                onClick={handleDescargarJpg}
+                style={{
+                  padding: "0.7rem 1rem",
+                  border: "none",
+                  borderRadius: "8px",
+                  background: "#1e5f74",
+                  color: "#fff",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Descargar JPG
+              </button>
+            </div>
+
+            <div ref={mesGridRef}>
+              <CuadriculaMes
+                trabajadores={trabajadores}
+                empresa={empresaSeleccionada}
+                fechaMes={convertirMes(fechaSeleccionada)}
+              />
+            </div>
+          </div>
         )}
     </div>
   );
