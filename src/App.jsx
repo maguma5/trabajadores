@@ -195,30 +195,31 @@ function App() {
           .sort((a, b) => (a.nombre || "").localeCompare(b.nombre || ""))
       : [];
 
-  const handleVerTrabajadores = () => {
+  const validarSeleccion = () => {
     if (!modo) {
-      setErrorMensaje("Primero elige si quieres ver un día o un mes.");
-      return;
+      return "Primero elige si quieres ver un día o un mes.";
     }
 
     if (modo === "dia" && !fechaSeleccionada) {
-      setErrorMensaje(
-        "Debes seleccionar un día antes de ver los trabajadores.",
-      );
-      return;
+      return "Debes seleccionar un día antes de ver los trabajadores.";
     }
 
     if (modo === "mes" && !fechaSeleccionada) {
-      setErrorMensaje(
-        "Debes seleccionar un mes antes de ver los trabajadores.",
-      );
-      return;
+      return "Debes seleccionar un mes antes de ver los trabajadores.";
     }
 
     if (modo === "mes" && !empresaSeleccionada) {
-      setErrorMensaje(
-        "Debes seleccionar una empresa antes de ver los trabajadores.",
-      );
+      return "Debes seleccionar una empresa antes de ver los trabajadores.";
+    }
+
+    return "";
+  };
+
+  const handleVerTrabajadores = () => {
+    const mensaje = validarSeleccion();
+
+    if (mensaje) {
+      setErrorMensaje(mensaje);
       return;
     }
 
@@ -319,8 +320,11 @@ function App() {
                   : "Seleccione un mes"
             }
             onChange={(e) => {
-              setFechaSeleccionada(e.target.value);
-              setErrorMensaje("");
+              const nuevaFecha = e.target.value;
+              setFechaSeleccionada(nuevaFecha);
+              if (nuevaFecha) {
+                setErrorMensaje("");
+              }
             }}
             className="selector-fecha"
             style={{
@@ -333,8 +337,11 @@ function App() {
           <select
             value={empresaSeleccionada}
             onChange={(e) => {
-              setEmpresaSeleccionada(e.target.value);
-              setErrorMensaje("");
+              const nuevaEmpresa = e.target.value;
+              setEmpresaSeleccionada(nuevaEmpresa);
+              if (nuevaEmpresa) {
+                setErrorMensaje("");
+              }
             }}
             className="selector-fecha"
           >
