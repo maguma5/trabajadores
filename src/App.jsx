@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 import Logo from "./assets/iconosegura.jpg";
 
 import "./App.css";
@@ -382,6 +383,109 @@ function App() {
     }
   };
 
+  const handleDescargarPdf = () => {
+    const empresas = Object.entries(empresasMostradas);
+
+    if (!empresas.length) {
+      setErrorMensaje("No hay trabajadores disponibles para descargar.");
+      setSuccessMensaje("");
+      return;
+    }
+
+    const documento = new jsPDF();
+    const margen = 18;
+    const anchoPagina = documento.internal.pageSize.getWidth();
+    const altoPagina = documento.internal.pageSize.getHeight();
+    let posicionY = 22;
+
+    const dibujarCabecera = () => {
+      documento.setTextColor(13, 59, 102);
+      documento.setFont("helvetica", "bold");
+      documento.setFontSize(18);
+      documento.text("LISTA DE TRABAJADORES", margen, posicionY);
+      posicionY += 9;
+      documento.setFont("helvetica", "normal");
+      documento.setFontSize(11);
+      documento.setTextColor(71, 85, 105);
+      documento.text(
+        `Fecha: ${formatearFecha(fechaSeleccionada)}`,
+        margen,
+        posicionY,
+      );
+      posicionY += 8;
+      documento.setDrawColor(13, 59, 102);
+      documento.setLineWidth(0.8);
+      documento.line(margen, posicionY, anchoPagina - margen, posicionY);
+      posicionY += 10;
+    };
+
+    const nuevaPaginaSiEsNecesario = (alturaNecesaria = 10) => {
+      if (posicionY + alturaNecesaria > altoPagina - 16) {
+        documento.addPage();
+        posicionY = 22;
+        dibujarCabecera();
+      }
+    };
+
+    dibujarCabecera();
+
+    empresas.forEach(([empresa, lista]) => {
+      nuevaPaginaSiEsNecesario(24);
+      documento.setFillColor(13, 59, 102);
+      documento.rect(margen, posicionY - 5, anchoPagina - margen * 2, 9, "F");
+      documento.setTextColor(255, 255, 255);
+      documento.setFont("helvetica", "bold");
+      documento.setFontSize(11);
+      documento.text(
+        `${empresa} (${lista.length} trabajador${lista.length !== 1 ? "es" : ""})`,
+        margen + 3,
+        posicionY + 1,
+      );
+      posicionY += 13;
+
+      documento.setFillColor(230, 238, 247);
+      documento.rect(margen, posicionY - 5, anchoPagina - margen * 2, 8, "F");
+      documento.setTextColor(31, 41, 55);
+      documento.setFontSize(10);
+      documento.text("Trabajador", margen + 3, posicionY);
+      documento.text("DNI", anchoPagina - margen - 45, posicionY);
+      posicionY += 9;
+
+      lista.forEach((trabajador, indice) => {
+        nuevaPaginaSiEsNecesario(9);
+        if (indice % 2 === 0) {
+          documento.setFillColor(247, 250, 252);
+          documento.rect(
+            margen,
+            posicionY - 5,
+            anchoPagina - margen * 2,
+            8,
+            "F",
+          );
+        }
+        documento.setTextColor(31, 41, 55);
+        documento.setFont("helvetica", "normal");
+        documento.text(
+          String(trabajador.nombre || "Sin nombre"),
+          margen + 3,
+          posicionY,
+        );
+        documento.text(
+          String(obtenerDniTrabajador(trabajador)),
+          anchoPagina - margen - 45,
+          posicionY,
+        );
+        posicionY += 8;
+      });
+
+      posicionY += 7;
+    });
+
+    documento.save(`trabajadores-${fechaSeleccionada || "dia"}.pdf`);
+    setErrorMensaje("");
+    setSuccessMensaje("Descarga del PDF realizada correctamente.");
+  };
+
   return (
     <div
       style={{
@@ -622,10 +726,35 @@ function App() {
 
       {mostrar && modo === "dia" && fechaSeleccionada && (
         <div>
-          <h2>
-            Total: {trabajadores.length} trabajador
-            {trabajadores.length !== 1 ? "es" : ""}
-          </h2>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "1rem",
+              flexWrap: "wrap",
+              marginBottom: "1rem",
+            }}
+          >
+            <h2 style={{ margin: 0 }}>
+              Total: {trabajadores.length} trabajador
+              {trabajadores.length !== 1 ? "es" : ""}
+            </h2>
+            <button
+              onClick={handleDescargarPdf}
+              style={{
+                padding: "0.7rem 1rem",
+                border: "none",
+                borderRadius: "8px",
+                background: "#8b3a3a",
+                color: "#fff",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              Descargar PDF
+            </button>
+          </div>
           {Object.entries(empresasMostradas).map(([empresa, lista]) => (
             <div key={empresa} style={{ marginBottom: "1.5rem" }}>
               <h3>
