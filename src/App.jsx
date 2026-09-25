@@ -106,7 +106,15 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
   );
 
   return (
-    <div style={{ overflowX: "auto", maxWidth: "100%" }}>
+    <div
+      style={{
+        overflowX: "auto",
+        maxWidth: "100%",
+        width: "max-content",
+        minWidth: "100%",
+        padding: "0.25rem 0",
+      }}
+    >
       <table
         border="1"
         cellPadding="6"
@@ -115,23 +123,71 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
           tableLayout: "auto",
           width: "auto",
           borderCollapse: "collapse",
+          background: "#ffffff",
+          color: "#1f2937",
+          fontFamily: "Arial, sans-serif",
+          fontSize: "14px",
         }}
       >
         <thead>
-          <tr>
-            <th style={{ whiteSpace: "nowrap" }}>Trabajador</th>
+          <tr style={{ background: "#0d3b66", color: "#ffffff" }}>
+            <th
+              style={{
+                whiteSpace: "nowrap",
+                padding: "10px 14px",
+                color: "#ffffff",
+                textAlign: "left",
+              }}
+            >
+              Trabajador
+            </th>
             {dias.map((dia) => (
-              <th key={dia}>{dia}</th>
+              <th
+                key={dia}
+                style={{
+                  minWidth: "34px",
+                  padding: "10px 6px",
+                  color: "#ffffff",
+                  textAlign: "center",
+                }}
+              >
+                {dia}
+              </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {matriz.map((fila, i) => (
-            <tr key={i}>
-              <td style={{ whiteSpace: "nowrap" }}>{fila.nombre}</td>
+            <tr
+              key={i}
+              style={{
+                background: i % 2 === 0 ? "#f3f7fb" : "#ffffff",
+              }}
+            >
+              <td
+                style={{
+                  whiteSpace: "nowrap",
+                  padding: "9px 14px",
+                  fontWeight: 600,
+                }}
+              >
+                {fila.nombre}
+              </td>
               {dias.map((dia) => {
                 const fecha = `${dia}/${fechaMes}`;
-                return <td key={dia}>{fila[fecha]}</td>;
+                return (
+                  <td
+                    key={dia}
+                    style={{
+                      minWidth: "34px",
+                      padding: "9px 6px",
+                      textAlign: "center",
+                      fontSize: "16px",
+                    }}
+                  >
+                    {fila[fecha]}
+                  </td>
+                );
               })}
             </tr>
           ))}
@@ -139,12 +195,33 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       </table>
 
       {Object.keys(leyenda).length > 0 && (
-        <div style={{ marginTop: "1em" }}>
-          <h4>Leyenda de incidencias</h4>
-          <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+        <div
+          style={{
+            marginTop: "1rem",
+            padding: "0.85rem 1rem",
+            background: "#f3f7fb",
+            border: "1px solid #c8d3e1",
+            borderRadius: "8px",
+            fontFamily: "Arial, sans-serif",
+          }}
+        >
+          <h4 style={{ margin: "0 0 0.6rem", color: "#0d3b66" }}>
+            Leyenda de incidencias
+          </h4>
+          <ul
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, minmax(220px, 1fr))",
+              gap: "0.35rem 1.5rem",
+              listStyle: "none",
+              paddingLeft: 0,
+              margin: 0,
+            }}
+          >
             {Object.entries(leyenda).map(([desc, simbolo]) => (
-              <li key={simbolo}>
-                <strong>{simbolo}</strong> → {desc}
+              <li key={simbolo} style={{ color: "#374151" }}>
+                <strong style={{ fontSize: "1.1rem" }}>{simbolo}</strong>
+                <span style={{ marginLeft: "0.4rem" }}>{desc}</span>
               </li>
             ))}
           </ul>
@@ -249,9 +326,15 @@ function App() {
     }
 
     try {
-      const canvas = await html2canvas(mesGridRef.current, {
+      const elemento = mesGridRef.current;
+      const canvas = await html2canvas(elemento, {
         backgroundColor: "#ffffff",
         scale: 2,
+        useCORS: true,
+        width: elemento.scrollWidth,
+        height: elemento.scrollHeight,
+        windowWidth: elemento.scrollWidth,
+        windowHeight: elemento.scrollHeight,
       });
 
       const nombreArchivo = `cuadrilla-${empresaSeleccionada || "empresa"}-${fechaSeleccionada || "mes"}.jpg`;
@@ -607,7 +690,49 @@ function App() {
               </button>
             </div>
 
-            <div ref={mesGridRef}>
+            <div
+              ref={mesGridRef}
+              style={{
+                width: "max-content",
+                minWidth: "100%",
+                maxWidth: "100%",
+                overflowX: "auto",
+                background: "#fff",
+                borderRadius: "12px",
+                padding: "0.5rem",
+                boxShadow: "0 2px 12px rgba(13, 59, 102, 0.08)",
+              }}
+            >
+              <div
+                style={{
+                  padding: "0.75rem 0.5rem 1rem",
+                  color: "#0d3b66",
+                  fontFamily: "Arial, sans-serif",
+                  borderBottom: "3px solid #0d3b66",
+                  marginBottom: "0.75rem",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  CUADRÍCULA MENSUAL
+                </div>
+                <div
+                  style={{
+                    marginTop: "0.35rem",
+                    color: "#475569",
+                    fontSize: "1rem",
+                  }}
+                >
+                  Empresa: <strong>{empresaSeleccionada}</strong>
+                  <span style={{ margin: "0 0.5rem" }}>|</span>
+                  Periodo: <strong>{formatearMes(fechaSeleccionada)}</strong>
+                </div>
+              </div>
               <CuadriculaMes
                 trabajadores={trabajadores}
                 empresa={empresaSeleccionada}
