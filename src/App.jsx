@@ -176,6 +176,7 @@ function App() {
   const [fechaSeleccionada, setFechaSeleccionada] = useState("");
   const { trabajadores, loading } = useTrabajadores(modo, fechaSeleccionada);
   const [inputFocus, setInputFocus] = useState(false);
+  const [errorMensaje, setErrorMensaje] = useState("");
 
   const trabajadoresPorEmpresa =
     modo === "dia" ? agruparPorEmpresa(trabajadores) : {};
@@ -186,25 +187,28 @@ function App() {
 
   const handleVerTrabajadores = () => {
     if (!modo) {
-      alert("Primero elige si quieres ver un día o un mes.");
+      setErrorMensaje("Primero elige si quieres ver un día o un mes.");
       return;
     }
 
     if (modo === "dia" && !fechaSeleccionada) {
-      alert("Debes seleccionar un día antes de ver los trabajadores.");
+      setErrorMensaje("Debes seleccionar un día antes de ver los trabajadores.");
       return;
     }
 
     if (modo === "mes" && !fechaSeleccionada) {
-      alert("Debes seleccionar un mes antes de ver los trabajadores.");
+      setErrorMensaje("Debes seleccionar un mes antes de ver los trabajadores.");
       return;
     }
 
     if (modo === "mes" && !empresaSeleccionada) {
-      alert("Debes seleccionar una empresa antes de ver los trabajadores.");
+      setErrorMensaje(
+        "Debes seleccionar una empresa antes de ver los trabajadores.",
+      );
       return;
     }
 
+    setErrorMensaje("");
     setMostrar((prev) => !prev);
   };
 
@@ -217,6 +221,7 @@ function App() {
         onClick={() => {
           setModo("dia");
           setMostrar(false);
+          setErrorMensaje("");
         }}
       >
         Ver trabajadores de un dia
@@ -225,10 +230,28 @@ function App() {
         onClick={() => {
           setModo("mes");
           setMostrar(false);
+          setErrorMensaje("");
         }}
       >
         Ver trabajadores del mes
       </button>
+
+      {errorMensaje && (
+        <p
+          role="alert"
+          style={{
+            margin: "12px 0",
+            padding: "10px 12px",
+            borderRadius: "8px",
+            backgroundColor: "#fff3cd",
+            color: "#856404",
+            border: "1px solid #ffeeba",
+            fontWeight: "600",
+          }}
+        >
+          {errorMensaje}
+        </p>
+      )}
 
       {modo === "dia" && (
         <input
@@ -248,7 +271,10 @@ function App() {
                 ? formatearFecha(fechaSeleccionada)
                 : "Seleccione un día"
           }
-          onChange={(e) => setFechaSeleccionada(e.target.value)}
+          onChange={(e) => {
+            setFechaSeleccionada(e.target.value);
+            setErrorMensaje("");
+          }}
           className="selector-fecha"
           style={{
             color: !fechaSeleccionada ? "white" : "white",
@@ -278,7 +304,10 @@ function App() {
                   ? formatearMes(fechaSeleccionada)
                   : "Seleccione un mes"
             }
-            onChange={(e) => setFechaSeleccionada(e.target.value)}
+            onChange={(e) => {
+              setFechaSeleccionada(e.target.value);
+              setErrorMensaje("");
+            }}
             className="selector-fecha"
             style={{
               color: !fechaSeleccionada ? "white" : "white",
@@ -289,7 +318,10 @@ function App() {
 
           <select
             value={empresaSeleccionada}
-            onChange={(e) => setEmpresaSeleccionada(e.target.value)}
+            onChange={(e) => {
+              setEmpresaSeleccionada(e.target.value);
+              setErrorMensaje("");
+            }}
             className="selector-fecha"
           >
             <option value="">Selecciona una empresa</option>
