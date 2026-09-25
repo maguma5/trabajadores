@@ -384,25 +384,11 @@ function App() {
         empresaSeleccionada &&
         fechaSeleccionada &&
         trabajadores.length > 0 && (
-          <>
-            <div style={{ marginTop: "1.5em" }}>
-              <h3>Trabajadores de {empresaSeleccionada}</h3>
-              <ul style={{ paddingLeft: "1.25rem" }}>
-                {trabajadoresEmpresaSeleccionada.map((trabajador, index) => (
-                  <li key={`${trabajador.id || index}`}>
-                    {trabajador.nombre} — DNI:{" "}
-                    {obtenerDniTrabajador(trabajador)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <CuadriculaMes
-              trabajadores={trabajadores}
-              empresa={empresaSeleccionada}
-              fechaMes={convertirMes(fechaSeleccionada)}
-            />
-          </>
+          <CuadriculaMes
+            trabajadores={trabajadores}
+            empresa={empresaSeleccionada}
+            fechaMes={convertirMes(fechaSeleccionada)}
+          />
         )}
     </>
   );
