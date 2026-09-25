@@ -335,6 +335,21 @@ function App() {
         height: elemento.scrollHeight,
         windowWidth: elemento.scrollWidth,
         windowHeight: elemento.scrollHeight,
+        onclone: (documentoClonado) => {
+          const cuadrillaClonada =
+            documentoClonado.getElementById("mes-grid-export");
+
+          if (!cuadrillaClonada) return;
+
+          cuadrillaClonada.style.width = `${elemento.scrollWidth}px`;
+          cuadrillaClonada.style.maxWidth = "none";
+          cuadrillaClonada.style.overflow = "visible";
+
+          cuadrillaClonada.querySelectorAll("div").forEach((div) => {
+            div.style.maxWidth = "none";
+            div.style.overflow = "visible";
+          });
+        },
       });
 
       const nombreArchivo = `cuadrilla-${empresaSeleccionada || "empresa"}-${fechaSeleccionada || "mes"}.jpg`;
@@ -692,6 +707,7 @@ function App() {
 
             <div
               ref={mesGridRef}
+              id="mes-grid-export"
               style={{
                 width: "max-content",
                 minWidth: "100%",
