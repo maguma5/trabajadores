@@ -327,30 +327,46 @@ function App() {
 
     try {
       const elemento = mesGridRef.current;
+      const contenedores = [elemento, ...elemento.querySelectorAll("div")];
+      const estilosOriginales = contenedores.map((contenedor) => ({
+        contenedor,
+        width: contenedor.style.width,
+        maxWidth: contenedor.style.maxWidth,
+        overflow: contenedor.style.overflow,
+        overflowX: contenedor.style.overflowX,
+      }));
+
+      contenedores.forEach((contenedor) => {
+        contenedor.style.maxWidth = "none";
+        contenedor.style.overflow = "visible";
+        contenedor.style.overflowX = "visible";
+      });
+
+      const tabla = elemento.querySelector("table");
+      const anchoCompleto = Math.max(
+        elemento.scrollWidth,
+        tabla?.scrollWidth || 0,
+      );
+      elemento.style.width = `${anchoCompleto}px`;
+
       const canvas = await html2canvas(elemento, {
         backgroundColor: "#ffffff",
         scale: 2,
         useCORS: true,
-        width: elemento.scrollWidth,
+        width: anchoCompleto,
         height: elemento.scrollHeight,
-        windowWidth: elemento.scrollWidth,
+        windowWidth: anchoCompleto,
         windowHeight: elemento.scrollHeight,
-        onclone: (documentoClonado) => {
-          const cuadrillaClonada =
-            documentoClonado.getElementById("mes-grid-export");
-
-          if (!cuadrillaClonada) return;
-
-          cuadrillaClonada.style.width = `${elemento.scrollWidth}px`;
-          cuadrillaClonada.style.maxWidth = "none";
-          cuadrillaClonada.style.overflow = "visible";
-
-          cuadrillaClonada.querySelectorAll("div").forEach((div) => {
-            div.style.maxWidth = "none";
-            div.style.overflow = "visible";
-          });
-        },
       });
+
+      estilosOriginales.forEach(
+        ({ contenedor, width, maxWidth, overflow, overflowX }) => {
+          contenedor.style.width = width;
+          contenedor.style.maxWidth = maxWidth;
+          contenedor.style.overflow = overflow;
+          contenedor.style.overflowX = overflowX;
+        },
+      );
 
       const nombreArchivo = `cuadrilla-${empresaSeleccionada || "empresa"}-${fechaSeleccionada || "mes"}.jpg`;
       const enlace = document.createElement("a");
