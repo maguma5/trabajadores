@@ -158,6 +158,10 @@ function convertirMes(fechaMes) {
   return `${mes}/${año}`;
 }
 
+function obtenerDniTrabajador(trabajador) {
+  return trabajador?.dni || trabajador?.DNI || "Sin DNI";
+}
+
 function formatearFecha(fechaISO) {
   if (!fechaISO) return "";
   const opciones = { day: "numeric", month: "long", year: "numeric" };
@@ -184,6 +188,12 @@ function App() {
   const empresasUnicas = trabajadores
     ? [...new Set(trabajadores.map((t) => t.empresa || "Sin empresa"))]
     : [];
+  const trabajadoresEmpresaSeleccionada =
+    empresaSeleccionada && trabajadores
+      ? [...trabajadores]
+          .filter((t) => (t.empresa || "Sin empresa") === empresaSeleccionada)
+          .sort((a, b) => (a.nombre || "").localeCompare(b.nombre || ""))
+      : [];
 
   const handleVerTrabajadores = () => {
     if (!modo) {
@@ -192,12 +202,16 @@ function App() {
     }
 
     if (modo === "dia" && !fechaSeleccionada) {
-      setErrorMensaje("Debes seleccionar un día antes de ver los trabajadores.");
+      setErrorMensaje(
+        "Debes seleccionar un día antes de ver los trabajadores.",
+      );
       return;
     }
 
     if (modo === "mes" && !fechaSeleccionada) {
-      setErrorMensaje("Debes seleccionar un mes antes de ver los trabajadores.");
+      setErrorMensaje(
+        "Debes seleccionar un mes antes de ver los trabajadores.",
+      );
       return;
     }
 
@@ -350,7 +364,9 @@ function App() {
                 {lista.length !== 1 ? "es" : ""}
               </h3>
               {lista.map((trabajador, index) => (
-                <p key={index}>{trabajador.nombre}</p>
+                <p key={index}>
+                  {trabajador.nombre} — DNI: {obtenerDniTrabajador(trabajador)}
+                </p>
               ))}
             </div>
           ))}
@@ -361,11 +377,25 @@ function App() {
         empresaSeleccionada &&
         fechaSeleccionada &&
         trabajadores.length > 0 && (
-          <CuadriculaMes
-            trabajadores={trabajadores}
-            empresa={empresaSeleccionada}
-            fechaMes={convertirMes(fechaSeleccionada)}
-          />
+          <>
+            <div style={{ marginTop: "1.5em" }}>
+              <h3>Trabajadores de {empresaSeleccionada}</h3>
+              <ul style={{ paddingLeft: "1.25rem" }}>
+                {trabajadoresEmpresaSeleccionada.map((trabajador, index) => (
+                  <li key={`${trabajador.id || index}`}>
+                    {trabajador.nombre} — DNI:{" "}
+                    {obtenerDniTrabajador(trabajador)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <CuadriculaMes
+              trabajadores={trabajadores}
+              empresa={empresaSeleccionada}
+              fechaMes={convertirMes(fechaSeleccionada)}
+            />
+          </>
         )}
     </>
   );
