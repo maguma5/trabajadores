@@ -182,6 +182,7 @@ function App() {
   const { trabajadores, loading } = useTrabajadores(modo, fechaSeleccionada);
   const [inputFocus, setInputFocus] = useState(false);
   const [errorMensaje, setErrorMensaje] = useState("");
+  const [successMensaje, setSuccessMensaje] = useState("");
   const mesGridRef = useRef(null);
 
   const trabajadoresPorEmpresa =
@@ -232,10 +233,12 @@ function App() {
 
     if (mensaje) {
       setErrorMensaje(mensaje);
+      setSuccessMensaje("");
       return;
     }
 
     setErrorMensaje("");
+    setSuccessMensaje("");
     setMostrar((prev) => !prev);
   };
 
@@ -257,9 +260,11 @@ function App() {
       enlace.href = canvas.toDataURL("image/jpeg", 0.95);
       enlace.click();
       setErrorMensaje("");
+      setSuccessMensaje("Descarga realizada correctamente.");
     } catch (error) {
       console.error("Error al generar la imagen JPG:", error);
       setErrorMensaje("No se pudo generar la imagen JPG.");
+      setSuccessMensaje("");
     }
   };
 
@@ -295,6 +300,7 @@ function App() {
             setEmpresaSeleccionada("");
             setMostrar(false);
             setErrorMensaje("");
+            setSuccessMensaje("");
           }}
           style={{
             padding: "0.75rem 1rem",
@@ -314,6 +320,7 @@ function App() {
             setEmpresaSeleccionada("");
             setMostrar(false);
             setErrorMensaje("");
+            setSuccessMensaje("");
           }}
           style={{
             padding: "0.75rem 1rem",
@@ -343,6 +350,23 @@ function App() {
           }}
         >
           {errorMensaje}
+        </p>
+      )}
+
+      {successMensaje && (
+        <p
+          role="status"
+          style={{
+            margin: "12px 0",
+            padding: "10px 12px",
+            borderRadius: "8px",
+            backgroundColor: "#e8f5e9",
+            color: "#1b5e20",
+            border: "1px solid #c8e6c9",
+            fontWeight: "600",
+          }}
+        >
+          {successMensaje}
         </p>
       )}
 
