@@ -456,10 +456,22 @@ function App() {
               >
                 <thead>
                   <tr style={{ background: "#0d3b66", color: "#fff" }}>
-                    <th style={{ textAlign: "left", padding: "12px 14px" }}>
+                    <th
+                      style={{
+                        textAlign: "left",
+                        padding: "12px 14px",
+                        color: "#fff",
+                      }}
+                    >
                       Trabajador
                     </th>
-                    <th style={{ textAlign: "left", padding: "12px 14px" }}>
+                    <th
+                      style={{
+                        textAlign: "left",
+                        padding: "12px 14px",
+                        color: "#fff",
+                      }}
+                    >
                       DNI
                     </th>
                   </tr>
@@ -473,10 +485,10 @@ function App() {
                         borderBottom: "1px solid #edf1f5",
                       }}
                     >
-                      <td style={{ padding: "10px 14px" }}>
+                      <td style={{ padding: "10px 14px", color: "#1f2937" }}>
                         {trabajador.nombre}
                       </td>
-                      <td style={{ padding: "10px 14px" }}>
+                      <td style={{ padding: "10px 14px", color: "#1f2937" }}>
                         {obtenerDniTrabajador(trabajador)}
                       </td>
                     </tr>
