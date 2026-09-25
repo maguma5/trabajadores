@@ -39,7 +39,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
     const mesSeleccionado = fechaMes;
 
     const trabajadoresEmpresa = trabajadores.filter(
-      (t) => t.empresa === empresa && t.fecha?.includes(fechaMes)
+      (t) => t.empresa === empresa && t.fecha?.includes(fechaMes),
     );
 
     const nombresUnicos = [
@@ -78,7 +78,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
       dias.forEach((dia) => {
         const fechaCompleta = `${dia}/${mesSeleccionado}`;
         const registro = trabajadoresEmpresa.find(
-          (x) => x.nombre === nombre && x.fecha === fechaCompleta
+          (x) => x.nombre === nombre && x.fecha === fechaCompleta,
         );
 
         let incidencia;
@@ -101,7 +101,7 @@ function CuadriculaMes({ trabajadores, empresa, fechaMes }) {
   const { dias, matriz, leyenda } = construirMatriz(
     trabajadores,
     empresa,
-    fechaMes
+    fechaMes,
   );
 
   return (
@@ -184,13 +184,53 @@ function App() {
     ? [...new Set(trabajadores.map((t) => t.empresa || "Sin empresa"))]
     : [];
 
+  const hayValidacionPendiente =
+    !modo ||
+    (modo === "dia" && !fechaSeleccionada) ||
+    (modo === "mes" && (!fechaSeleccionada || !empresaSeleccionada));
+
+  const handleVerTrabajadores = () => {
+    if (!modo) {
+      alert("Primero elige si quieres ver un día o un mes.");
+      return;
+    }
+
+    if (modo === "dia" && !fechaSeleccionada) {
+      alert("Debes seleccionar un día antes de ver los trabajadores.");
+      return;
+    }
+
+    if (modo === "mes" && (!fechaSeleccionada || !empresaSeleccionada)) {
+      alert(
+        "Debes seleccionar un mes y una empresa antes de ver los trabajadores.",
+      );
+      return;
+    }
+
+    setMostrar((prev) => !prev);
+  };
+
   return (
     <>
       <h1>EMPRESA</h1>
       <img src={Logo} alt="Logo de la empresa" width="200" />
       <h1>Control de Presencia</h1>
-      <button onClick={() => setModo("dia")}>Ver trabajadores de un dia</button>
-      <button onClick={() => setModo("mes")}>Ver trabajadores del mes</button>
+      <button
+        onClick={() => {
+          setModo("dia");
+          setMostrar(false);
+        }}
+      >
+        Ver trabajadores de un dia
+      </button>
+      <button
+        onClick={() => {
+          setModo("mes");
+          setMostrar(false);
+        }}
+      >
+        Ver trabajadores del mes
+      </button>
 
       {modo === "dia" && (
         <input
@@ -207,8 +247,8 @@ function App() {
             inputFocus
               ? fechaSeleccionada
               : fechaSeleccionada
-              ? formatearFecha(fechaSeleccionada)
-              : "Seleccione un día"
+                ? formatearFecha(fechaSeleccionada)
+                : "Seleccione un día"
           }
           onChange={(e) => setFechaSeleccionada(e.target.value)}
           className="selector-fecha"
@@ -237,8 +277,8 @@ function App() {
               inputFocus
                 ? fechaSeleccionada
                 : fechaSeleccionada
-                ? formatearMes(fechaSeleccionada)
-                : "Seleccione un mes"
+                  ? formatearMes(fechaSeleccionada)
+                  : "Seleccione un mes"
             }
             onChange={(e) => setFechaSeleccionada(e.target.value)}
             className="selector-fecha"
@@ -264,10 +304,7 @@ function App() {
         </>
       )}
 
-      <button
-        disabled={!fechaSeleccionada && !empresaSeleccionada}
-        onClick={() => setMostrar(!mostrar)}
-      >
+      <button disabled={hayValidacionPendiente} onClick={handleVerTrabajadores}>
         Ver trabajadores
       </button>
       {loading && <p>Cargando empresas...</p>}
