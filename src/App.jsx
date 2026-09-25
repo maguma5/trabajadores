@@ -238,30 +238,70 @@ function App() {
   };
 
   return (
-    <>
-      <h1>EMPRESA</h1>
-      <img src={Logo} alt="Logo de la empresa" width="200" />
-      <h1>Control de Presencia</h1>
-      <button
-        onClick={() => {
-          setModo("dia");
-          setEmpresaSeleccionada("");
-          setMostrar(false);
-          setErrorMensaje("");
+    <div
+      style={{
+        maxWidth: "980px",
+        margin: "0 auto",
+        padding: "1.5rem 1rem 2rem",
+      }}
+    >
+      <h1 style={{ marginBottom: "0.5rem" }}>EMPRESA</h1>
+      <img
+        src={Logo}
+        alt="Logo de la empresa"
+        width="200"
+        style={{ display: "block", margin: "0 auto 1rem" }}
+      />
+      <h1 style={{ marginTop: 0, marginBottom: "1.25rem" }}>
+        Control de Presencia
+      </h1>
+      <div
+        style={{
+          display: "flex",
+          gap: "0.75rem",
+          flexWrap: "wrap",
+          marginBottom: "1rem",
         }}
       >
-        Ver trabajadores de un dia
-      </button>
-      <button
-        onClick={() => {
-          setModo("mes");
-          setEmpresaSeleccionada("");
-          setMostrar(false);
-          setErrorMensaje("");
-        }}
-      >
-        Ver trabajadores del mes
-      </button>
+        <button
+          onClick={() => {
+            setModo("dia");
+            setEmpresaSeleccionada("");
+            setMostrar(false);
+            setErrorMensaje("");
+          }}
+          style={{
+            padding: "0.75rem 1rem",
+            border: "none",
+            borderRadius: "8px",
+            background: "#0d3b66",
+            color: "#fff",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          Ver trabajadores de un dia
+        </button>
+        <button
+          onClick={() => {
+            setModo("mes");
+            setEmpresaSeleccionada("");
+            setMostrar(false);
+            setErrorMensaje("");
+          }}
+          style={{
+            padding: "0.75rem 1rem",
+            border: "none",
+            borderRadius: "8px",
+            background: "#2a6f97",
+            color: "#fff",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          Ver trabajadores del mes
+        </button>
+      </div>
 
       {errorMensaje && (
         <p
@@ -402,26 +442,43 @@ function App() {
               </h3>
 
               <table
-                border="1"
-                cellPadding="8"
+                cellPadding="10"
                 style={{
                   borderCollapse: "collapse",
                   width: "100%",
                   maxWidth: "600px",
                   background: "#fff",
+                  border: "1px solid #dfe7f1",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  boxShadow: "0 2px 8px rgba(13, 59, 102, 0.08)",
                 }}
               >
                 <thead>
-                  <tr>
-                    <th style={{ textAlign: "left" }}>Trabajador</th>
-                    <th style={{ textAlign: "left" }}>DNI</th>
+                  <tr style={{ background: "#0d3b66", color: "#fff" }}>
+                    <th style={{ textAlign: "left", padding: "12px 14px" }}>
+                      Trabajador
+                    </th>
+                    <th style={{ textAlign: "left", padding: "12px 14px" }}>
+                      DNI
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {lista.map((trabajador, index) => (
-                    <tr key={index}>
-                      <td>{trabajador.nombre}</td>
-                      <td>{obtenerDniTrabajador(trabajador)}</td>
+                    <tr
+                      key={index}
+                      style={{
+                        background: index % 2 === 0 ? "#f7f9fc" : "#ffffff",
+                        borderBottom: "1px solid #edf1f5",
+                      }}
+                    >
+                      <td style={{ padding: "10px 14px" }}>
+                        {trabajador.nombre}
+                      </td>
+                      <td style={{ padding: "10px 14px" }}>
+                        {obtenerDniTrabajador(trabajador)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -442,7 +499,7 @@ function App() {
             fechaMes={convertirMes(fechaSeleccionada)}
           />
         )}
-    </>
+    </div>
   );
 }
 
