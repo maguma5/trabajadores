@@ -189,13 +189,15 @@ function App() {
     ? [...new Set(trabajadores.map((t) => t.empresa || "Sin empresa"))]
     : [];
   const empresasMostradas =
-    modo === "dia" && empresaSeleccionada
-      ? {
-          [empresaSeleccionada]: trabajadores.filter(
-            (t) => (t.empresa || "Sin empresa") === empresaSeleccionada,
-          ),
-        }
-      : trabajadoresPorEmpresa;
+    modo === "dia"
+      ? empresaSeleccionada
+        ? {
+            [empresaSeleccionada]: trabajadores.filter(
+              (t) => (t.empresa || "Sin empresa") === empresaSeleccionada,
+            ),
+          }
+        : trabajadoresPorEmpresa
+      : {};
   const trabajadoresEmpresaSeleccionada =
     empresaSeleccionada && trabajadores
       ? [...trabajadores]
@@ -386,7 +388,7 @@ function App() {
       <button onClick={handleVerTrabajadores}>Ver trabajadores</button>
       {loading && <p>Cargando empresas...</p>}
 
-      {mostrar && modo === "dia" && (
+      {mostrar && modo === "dia" && fechaSeleccionada && (
         <div>
           <h2>
             Total: {trabajadores.length} trabajador
