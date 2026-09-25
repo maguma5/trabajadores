@@ -395,22 +395,44 @@ function App() {
             {trabajadores.length !== 1 ? "es" : ""}
           </h2>
           {Object.entries(empresasMostradas).map(([empresa, lista]) => (
-            <div key={empresa}>
+            <div key={empresa} style={{ marginBottom: "1.5rem" }}>
               <h3>
                 {empresa} — {lista.length} trabajador
                 {lista.length !== 1 ? "es" : ""}
               </h3>
-              {lista.map((trabajador, index) => (
-                <p key={index}>
-                  {trabajador.nombre} — DNI: {obtenerDniTrabajador(trabajador)}
-                </p>
-              ))}
+
+              <table
+                border="1"
+                cellPadding="8"
+                style={{
+                  borderCollapse: "collapse",
+                  width: "100%",
+                  maxWidth: "600px",
+                  background: "#fff",
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: "left" }}>Trabajador</th>
+                    <th style={{ textAlign: "left" }}>DNI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lista.map((trabajador, index) => (
+                    <tr key={index}>
+                      <td>{trabajador.nombre}</td>
+                      <td>{obtenerDniTrabajador(trabajador)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           ))}
         </div>
       )}
 
       {mostrar &&
+        modo === "mes" &&
         empresaSeleccionada &&
         fechaSeleccionada &&
         trabajadores.length > 0 && (
