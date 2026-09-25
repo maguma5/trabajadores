@@ -184,11 +184,6 @@ function App() {
     ? [...new Set(trabajadores.map((t) => t.empresa || "Sin empresa"))]
     : [];
 
-  const hayValidacionPendiente =
-    !modo ||
-    (modo === "dia" && !fechaSeleccionada) ||
-    (modo === "mes" && (!fechaSeleccionada || !empresaSeleccionada));
-
   const handleVerTrabajadores = () => {
     if (!modo) {
       alert("Primero elige si quieres ver un día o un mes.");
@@ -200,10 +195,13 @@ function App() {
       return;
     }
 
-    if (modo === "mes" && (!fechaSeleccionada || !empresaSeleccionada)) {
-      alert(
-        "Debes seleccionar un mes y una empresa antes de ver los trabajadores.",
-      );
+    if (modo === "mes" && !fechaSeleccionada) {
+      alert("Debes seleccionar un mes antes de ver los trabajadores.");
+      return;
+    }
+
+    if (modo === "mes" && !empresaSeleccionada) {
+      alert("Debes seleccionar una empresa antes de ver los trabajadores.");
       return;
     }
 
@@ -304,9 +302,7 @@ function App() {
         </>
       )}
 
-      <button disabled={hayValidacionPendiente} onClick={handleVerTrabajadores}>
-        Ver trabajadores
-      </button>
+      <button onClick={handleVerTrabajadores}>Ver trabajadores</button>
       {loading && <p>Cargando empresas...</p>}
 
       {mostrar && modo === "dia" && (
