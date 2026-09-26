@@ -241,6 +241,19 @@ function obtenerDniTrabajador(trabajador) {
   return trabajador?.dni || trabajador?.DNI || "Sin DNI";
 }
 
+function obtenerTelefonoTrabajador(trabajador) {
+  return (
+    trabajador?.telefono ||
+    trabajador?.teléfono ||
+    trabajador?.phone ||
+    "Sin teléfono"
+  );
+}
+
+function obtenerEmailTrabajador(trabajador) {
+  return trabajador?.email || trabajador?.correo || "Sin email";
+}
+
 function formatearFecha(fechaISO) {
   if (!fechaISO) return "";
   const opciones = { day: "numeric", month: "long", year: "numeric" };
@@ -257,6 +270,7 @@ function App() {
   const [mostrar, setMostrar] = useState(false);
   const [modo, setModo] = useState(""); // "dia" o "mes"
   const [fechaSeleccionada, setFechaSeleccionada] = useState("");
+  const [incluirDatosContacto, setIncluirDatosContacto] = useState(false);
   const { trabajadores, loading } = useTrabajadores(modo, fechaSeleccionada);
   const [inputFocus, setInputFocus] = useState(false);
   const [errorMensaje, setErrorMensaje] = useState("");
@@ -448,7 +462,13 @@ function App() {
       documento.setTextColor(31, 41, 55);
       documento.setFontSize(10);
       documento.text("Trabajador", margen + 3, posicionY);
-      documento.text("DNI", anchoPagina - margen - 45, posicionY);
+      if (incluirDatosContacto) {
+        documento.text("DNI", margen + 77, posicionY);
+        documento.text("Teléfono", margen + 106, posicionY);
+        documento.text("Email", margen + 136, posicionY);
+      } else {
+        documento.text("DNI", anchoPagina - margen - 45, posicionY);
+      }
       posicionY += 9;
 
       lista.forEach((trabajador, indice) => {
@@ -465,16 +485,51 @@ function App() {
         }
         documento.setTextColor(31, 41, 55);
         documento.setFont("helvetica", "normal");
-        documento.text(
-          String(trabajador.nombre || "Sin nombre"),
-          margen + 3,
-          posicionY,
-        );
-        documento.text(
-          String(obtenerDniTrabajador(trabajador)),
-          anchoPagina - margen - 45,
-          posicionY,
-        );
+        if (incluirDatosContacto) {
+          documento.text(
+            documento.splitTextToSize(
+              String(trabajador.nombre || "Sin nombre"),
+              70,
+            )[0],
+            margen + 3,
+            posicionY,
+          );
+          documento.text(
+            documento.splitTextToSize(
+              String(obtenerDniTrabajador(trabajador)),
+              25,
+            )[0],
+            margen + 77,
+            posicionY,
+          );
+          documento.text(
+            documento.splitTextToSize(
+              String(obtenerTelefonoTrabajador(trabajador)),
+              27,
+            )[0],
+            margen + 106,
+            posicionY,
+          );
+          documento.text(
+            documento.splitTextToSize(
+              String(obtenerEmailTrabajador(trabajador)),
+              35,
+            )[0],
+            margen + 136,
+            posicionY,
+          );
+        } else {
+          documento.text(
+            String(trabajador.nombre || "Sin nombre"),
+            margen + 3,
+            posicionY,
+          );
+          documento.text(
+            String(obtenerDniTrabajador(trabajador)),
+            anchoPagina - margen - 45,
+            posicionY,
+          );
+        }
         posicionY += 8;
       });
 
@@ -721,7 +776,33 @@ function App() {
         </div>
       )}
 
-      <button onClick={handleVerTrabajadores}>Ver trabajadores</button>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+          flexWrap: "wrap",
+          marginBottom: "1rem",
+        }}
+      >
+        <button onClick={handleVerTrabajadores}>Ver trabajadores</button>
+        {modo === "dia" && (
+          <label
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={incluirDatosContacto}
+              onChange={(e) => setIncluirDatosContacto(e.target.checked)}
+            />
+            Incluir teléfono y email
+          </label>
+        )}
+      </div>
       {loading && <p>Cargando empresas...</p>}
 
       {mostrar && modo === "dia" && fechaSeleccionada && (
@@ -795,6 +876,28 @@ function App() {
                     >
                       DNI
                     </th>
+                    {incluirDatosContacto && (
+                      <>
+                        <th
+                          style={{
+                            textAlign: "left",
+                            padding: "12px 14px",
+                            color: "#fff",
+                          }}
+                        >
+                          Teléfono
+                        </th>
+                        <th
+                          style={{
+                            textAlign: "left",
+                            padding: "12px 14px",
+                            color: "#fff",
+                          }}
+                        >
+                          Email
+                        </th>
+                      </>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -812,6 +915,20 @@ function App() {
                       <td style={{ padding: "10px 14px", color: "#1f2937" }}>
                         {obtenerDniTrabajador(trabajador)}
                       </td>
+                      {incluirDatosContacto && (
+                        <>
+                          <td
+                            style={{ padding: "10px 14px", color: "#1f2937" }}
+                          >
+                            {obtenerTelefonoTrabajador(trabajador)}
+                          </td>
+                          <td
+                            style={{ padding: "10px 14px", color: "#1f2937" }}
+                          >
+                            {obtenerEmailTrabajador(trabajador)}
+                          </td>
+                        </>
+                      )}
                     </tr>
                   ))}
                 </tbody>
