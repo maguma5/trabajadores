@@ -463,9 +463,9 @@ function App() {
       documento.setFontSize(10);
       documento.text("Trabajador", margen + 3, posicionY);
       if (incluirDatosContacto) {
-        documento.text("DNI", margen + 77, posicionY);
-        documento.text("Teléfono", margen + 106, posicionY);
-        documento.text("Email", margen + 136, posicionY);
+        documento.text("DNI", margen + 58, posicionY);
+        documento.text("Teléfono", margen + 83, posicionY);
+        documento.text("Email", margen + 109, posicionY);
       } else {
         documento.text("DNI", anchoPagina - margen - 45, posicionY);
       }
@@ -489,7 +489,7 @@ function App() {
           documento.text(
             documento.splitTextToSize(
               String(trabajador.nombre || "Sin nombre"),
-              70,
+              52,
             )[0],
             margen + 3,
             posicionY,
@@ -497,25 +497,25 @@ function App() {
           documento.text(
             documento.splitTextToSize(
               String(obtenerDniTrabajador(trabajador)),
-              25,
+              22,
             )[0],
-            margen + 77,
+            margen + 58,
             posicionY,
           );
           documento.text(
             documento.splitTextToSize(
               String(obtenerTelefonoTrabajador(trabajador)),
-              27,
+              23,
             )[0],
-            margen + 106,
+            margen + 83,
             posicionY,
           );
           documento.text(
             documento.splitTextToSize(
               String(obtenerEmailTrabajador(trabajador)),
-              35,
+              64,
             )[0],
-            margen + 136,
+            margen + 109,
             posicionY,
           );
         } else {
